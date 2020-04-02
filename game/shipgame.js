@@ -37,7 +37,7 @@ function Ship(size, location) {
     this.size = size;
 
     //Coordinates of the ship in the 2D array, an array with for ints
-    //syntax: [start row, start column, end column, end row]
+    //syntax: [start column, start row, end column, end row]
     this.location = location;
 
     //Boolean that determines if ship is sunk or not
@@ -229,6 +229,11 @@ function hideStartup() {
     for (i = 0; i < toHide.length; i++){
         toHide[i].style.display = "none";
     }
+}
+
+//Check for overlap
+function overlap(arr1, arr2){
+    ship3A.location.
 }
 
 placeBtn.onclick = setBoard;
