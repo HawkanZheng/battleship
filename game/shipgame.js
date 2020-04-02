@@ -47,13 +47,13 @@ function Ship(size, location) {
     this.isCorrectSize = function () {
         let correct = false;
 
-        //If ship is horizontal
+        //If ship is vertical
         if (location[0] == location[2]) {
             if (this.size == (Math.abs(location[1] - location[3]) + 1)) {
                 correct = true;
             }
 
-            //If ship is vertical
+            //If ship is horizontal
         } else if (location[1] == location[3]) {
             if (this.size == (Math.abs(location[0] - location[2]) + 1))
                 correct = true;
@@ -106,7 +106,7 @@ function gridCreate() {
 }
 
 //Create a ship
-function createShip(coor, size){
+function createShip(coor, size) {
     //Get coordinates ship
     let shipX1 = getXCoor(coor, 0);
     let shipY1 = getYCoor(coor, 1);
@@ -138,11 +138,13 @@ function setBoard() {
     ship4B = createShip(coor4B, SIZE4);
     //Create 3 unit ships
     ship3A = createShip(coor3A, SIZE3);
-    ship3B = createShip(coor3B, SIZE3); 
+    ship3B = createShip(coor3B, SIZE3);
 
     //Check for valid ship sizes, if valid start game
-    if(ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() 
-        && ship3A.isCorrectSize() && ship3B.isCorrectSize()){
+    if (ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() &&
+        ship3A.isCorrectSize() && ship3B.isCorrectSize()) {
+        //check if any ships are overlapped
+        if (!overlap()) {
             //Generate 2D array representing ship placement
             createPostitionArr();
 
@@ -150,11 +152,15 @@ function setBoard() {
             gridCreate();
 
             //Hide startup stuff
-            hideStartup(); 
+            hideStartup();
         } else {
-            window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
+            window.alert("One or more ships are overlapping. Please re-enter coordinates.")
         }
-    
+
+    } else {
+        window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
+    }
+
 }
 
 //Get x coordinate from input
@@ -224,18 +230,92 @@ function createPostitionArr() {
 //Hide startup info
 function hideStartup() {
     let toHide = document.getElementsByClassName("setup");
-    
+
     //Hide all setup stuff
-    for (i = 0; i < toHide.length; i++){
+    for (i = 0; i < toHide.length; i++) {
         toHide[i].style.display = "none";
     }
 }
 
 //Check for overlap
-function overlap(arr1, arr2){
-    ship3A.location
+function overlap() {
+    let overlapping = false;
+
+    //Arrays to compare overlaps
+    let overlap5 = [ship4A, ship4B, ship3A, ship3B];
+    let overlap4A = [ship4B, ship3A, ship3B];
+    let overlap4B = [ship3A, ship3B];
+    let overlap3A = [ship3B];
+
+    if (compareCoor(ship5, overlap5) || compareCoor(ship4A, overlap4A) ||
+        compareCoor(ship4B, overlap4B) || compareCoor(ship3A, overlap3A)) {
+        overlapping = true;
+    }
+
+    return overlapping;
+}
+
+//Determines if a ship is vertical
+function isVertical(aShip) {
+    let vertical = false;
+    if (aShip.location[0] == aShip.location[2]) {
+        vertical = true;
+    }
+    return vertical;
+}
+
+//Generates an array of coordinate pairs of the ships location
+//Used to compare for overlap
+function generateCoordinatePairs(aShip) {
+    let coorArr = [];
+    let xArr = [];
+    let yArr = [];
+    if (isVertical(aShip)) {
+        //Generate arrays of coordinate strings
+        for (let i = 0; i < aShip.size; i++) {
+            xArr.push("" + aShip.location[0]);
+        }
+        for (let i = Math.min(aShip.location[1], aShip.location[3]); i <= Math.max(aShip.location[1], aShip.location[3]); i++) {
+            yArr.push("" + i);
+        }
+
+        //Combine arrays into array of coordinate pairs
+        for (let i = 0; i < aShip.size; i++) {
+            coorArr[i] = xArr[i] + yArr[i];
+        }
+        //Horizontal ship
+    } else {
+        for (let i = 0; i < aShip.size; i++) {
+            yArr.push("" + aShip.location[1]);
+        }
+        for (let i = Math.min(aShip.location[0], aShip.location[2]); i <= Math.max(aShip.location[0], aShip.location[2]); i++) {
+            xArr.push("" + i);
+        }
+
+        //Combine arrays into array of coordinate pairs
+        for (let i = 0; i < aShip.size; i++) {
+            coorArr[i] = xArr[i] + yArr[i];
+        }
+    }
+    return coorArr;
+}
+
+//Compares a ship to an array of ships and checks for overlap
+function compareCoor(aShip, shipArr) {
+    let overlapping = false;
+    for (let i = 0; i < shipArr.length; i++) {
+        let arr1 = generateCoordinatePairs(aShip);
+        let arr2 = generateCoordinatePairs(shipArr[i]);
+        //compare coordinates and see if any match
+        //If matching coordinates there is overlap
+        arr1.forEach(function (curr) {
+            //If there is a match
+            if (!(arr2.indexOf(curr) == -1)) {
+                overlapping = true;
+            }
+        });
+    }
+    return overlapping;
 }
 
 placeBtn.onclick = setBoard;
-
-
