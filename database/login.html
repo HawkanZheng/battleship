@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    <!----------------------------------------------->
+    <!-- CSS: Bootstrap, Firebase, other API -->
+    <!----------------------------------------------->
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-firestore.js"></script>
+
+</head>
+<body>
+
+    <!----------------------->
+    <!--  HTML Section -->
+    <!----------------------->
+
+    <h1>Welcome to Battle Ship</h1>
+    <div id="firebaseui-auth-container">
+        <input type="email" id="userName" placeholder="email">
+    </br>
+        <input type="password" id="password" placeholder="password">
+    </br>
+        <button onclick="createUser()">SignUp</button>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!--------------------------------------------------------------------->
+    <!-- JS files: Your own JavaScript functions included here    -->
+    <!--------------------------------------------------------------------->
+    <script src="firestore.js"></script>
+    <script src="login.js"></script>
+
+    <!--------------------------------------------------------------------->
+    <!-- Make calls to your own JavaScript functions, here below-->
+    <!---------------------------------------------------------------------->
+</body>
+</html>
