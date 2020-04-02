@@ -17,6 +17,9 @@ let placeText3A = document.getElementById("setup4");
 let placeText3B = document.getElementById("setup5");
 let placeBtn = document.getElementById("place");
 
+//Array of string values for the columns
+let colArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+
 //2D Array for user coordinates
 var userArr = new Array(T_HEIGHT);
 
@@ -158,11 +161,11 @@ function setBoard() {
 function getXCoor(str, index) {
     //Start point x cooridinate
     let startX = str[index];
-    //Invalid input of first char
-    // if (colArr.indexOf(startX) == -1) {
-    //     //window.alert("Invalid input. Please re-enter coordinates.");
-    //     //return;
-    // }
+    //Invalid input of column coordinate
+    if (colArr.indexOf(startX) == -1) {
+        //window.alert("Invalid input. Please re-enter coordinates.");
+        return;
+    }
     return (startX.charCodeAt(0) - OFFSET);
 }
 
