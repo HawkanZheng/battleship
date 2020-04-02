@@ -198,6 +198,28 @@ placeBtn.onclick = setBoard;
 // Passing the 2-D Array 
 //------------------------------------------------------
 
+let gameRef = db.collection('Games');
+
+function passBoard() {
+
+}
+ref.doc().set({
+    gameId: currentGame
+}).then(function() {
+    console.log('Game created!');
+}).catch(function(error) {
+    console.error('Error creating game: ', error);
+});
+
+gameRef.doc(key).set({
+    // CurrGameId: currentGame,
+    email: userEmail,
+    UID: uid
+}).then(function() {
+    console.log('Doc successfully written!');
+}).catch(function(error) {
+    console.error('Error writing document: ', error);
+})
 
 
 //------------------------------------------------------

@@ -11,10 +11,6 @@
 <link rel="stylesheet" type="text/css" href="shipgame.css">
 
 <body>
-    <div id="welcome">
-    </br>
-    </br>
-    </div>
 
     <div>
         <img src="images/grid.JPG" id="grid"></br>
@@ -29,10 +25,25 @@
 
     <div>
         <button onclick="logout()">Logout</button>
+    </br>
+    </br>
+    </div>
+    <div>
+        <button onclick="createGame()">Create New Game</button>
+    </br>
+    </div>
+    <div>
+    </br>
+        <li id="opengames">
+            Currently no games
+        </li>
+    </br>
+        <button onclick="joinGame()">Join the Game</button>
+    </br>
     </div>
     <script src="login.js"></script>
     <script src="shipgame.js"></script>
-    <script src="firebase.js"></script>
+    <script src="joingame.js"></script>
 </body>
 
 </html>

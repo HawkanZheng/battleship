@@ -1,3 +1,22 @@
+//--------------------------------------------------------------
+// Your web app's Firebase configuration
+//--------------------------------------------------------------
+let config = {
+    apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
+    authDomain: "battleship-bd087.firebaseapp.com",
+    databaseURL: "https://battleship-bd087.firebaseio.com",
+    projectId: "battleship-bd087",
+    storageBucket: "battleship-bd087.appspot.com",
+    messagingSenderId: "284023123174",
+    appId: "1:284023123174:web:6891c643a73cffa7765f27"
+};
+// Initialize Firebase
+firebase.initializeApp(config);
+
+// Get a reference to the database server.
+let db = firebase.firestore();
+let auth = firebase.auth();
+
 //Table height and width
 const T_HEIGHT = 10;
 const T_WIDTH = 12;
@@ -106,7 +125,7 @@ function gridCreate() {
 }
 
 //Create a ship
-function createShip(coor, size){
+function createShip(coor, size) {
     //Get coordinates ship
     let shipX1 = getXCoor(coor, 0);
     let shipY1 = getYCoor(coor, 1);
@@ -138,23 +157,26 @@ function setBoard() {
     ship4B = createShip(coor4B, SIZE4);
     //Create 3 unit ships
     ship3A = createShip(coor3A, SIZE3);
-    ship3B = createShip(coor3B, SIZE3); 
+    ship3B = createShip(coor3B, SIZE3);
 
     //Check for valid ship sizes, if valid start game
-    if(ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() 
-        && ship3A.isCorrectSize() && ship3B.isCorrectSize()){
-            //Generate 2D array representing ship placement
-            createPostitionArr();
+    if (ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() &&
+        ship3A.isCorrectSize() && ship3B.isCorrectSize()) {
+        //Generate 2D array representing ship placement
+        createPostitionArr();
 
-            //Generate grid with ships placed
-            gridCreate();
+        //Generate grid with ships placed
+        gridCreate();
 
-            //Hide startup stuff
-            hideStartup(); 
-        } else {
-            window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
-        }
-    
+        // Send board to datebase.
+        sendBoard();
+
+        //Hide startup stuff
+        hideStartup();
+    } else {
+        window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
+    }
+
 }
 
 //Get x coordinate from input
@@ -224,13 +246,46 @@ function createPostitionArr() {
 //Hide startup info
 function hideStartup() {
     let toHide = document.getElementsByClassName("setup");
-    
+
     //Hide all setup stuff
-    for (i = 0; i < toHide.length; i++){
+    for (i = 0; i < toHide.length; i++) {
         toHide[i].style.display = "none";
     }
 }
 
 placeBtn.onclick = setBoard;
 
+//-----------------------------------------------------------------------
+// Send the Grid to the database. 
+//-----------------------------------------------------------------------
 
+// Get the values of the users board.
+let gridRef = db.collection('Games');
+
+// Send board to the database.
+function sendBoard() {
+    
+    // Get the current users UID.
+    let user = firebase.auth().currentUser;
+    uid = user.uid;
+
+    gridRef.collection(uid).doc('Board').set({
+        // CurrGameId: currentGame,
+        board: userArr
+    }).then(function () {
+        console.log('Board successfully written!');
+    }).catch(function (error) {
+        console.error('Error sending board info: ', error);
+    });
+}
+
+gridRef.get().then(function(doc) {
+    if (doc.exists) {
+        console.log('Document data: ', doc.data());
+    } else {
+        // undefined
+        console.log('No such document.')
+    }
+}).catch(function(error) {
+    console.log('Error getting document: ', error);
+});

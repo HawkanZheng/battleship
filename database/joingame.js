@@ -1,36 +1,18 @@
-//--------------------------------------------------------------
-// Your web app's Firebase configuration
-//--------------------------------------------------------------
-let config = {
-    apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
-    authDomain: "battleship-bd087.firebaseapp.com",
-    databaseURL: "https://battleship-bd087.firebaseio.com",
-    projectId: "battleship-bd087",
-    storageBucket: "battleship-bd087.appspot.com",
-    messagingSenderId: "284023123174",
-    appId: "1:284023123174:web:6891c643a73cffa7765f27"
-};
-// Initialize Firebase
-firebase.initializeApp(config);
-
-// Get a reference to the database server.
-let db = firebase.firestore();
-let auth = firebase.auth();
 
 //--------------------------------------------------------------
 // Create a new game.
 //--------------------------------------------------------------
 
+// reference to games in database.
+ref = db.collection('Games');
+
 let STATE = {OPEN: 1, JOINED: 2};
 
 let game = {
-    'creator': {'userName': 'Daichi Keber', 'uid': user.uid},
-    'joiner': {'userName': 'Steve Sidhu', 'uid': user.uid},
+    'creator': {'userName': 'Daichi Keber', 'uid': 'sadasd12312dsa'},
+    'joiner': {'userName': 'Steve Sidhu', 'uid': 'sadasd1e12e12'},
     'state': 2 // JOINED
 }
-
-// reference to games in database.
-ref = db.collection('Games');
 
 // Create the game.
 function createGame() {
@@ -43,24 +25,55 @@ function createGame() {
         state: STATE.OPEN
     };
 
+    // Create a timestamp 
+    let time = new Date();
+    let timeStamp = time.getTime();
+
     // Push the game into the database.
     ref.doc().set({
-        gameId: currentGame
+        gameId: currentGame,
+        timeStamp: timeStamp
     }).then(function() {
         console.log('Game created!');
     }).catch(function(error) {
         console.error('Error creating game: ', error);
-    })
+    });
+
+    // Display all of the games.
+    displayGames();
+}
+
+//--------------------------------------------------------------
+// Display List of Games
+//--------------------------------------------------------------
+function displayGames() {
+    // get the open games.
+    ref.get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+            console.log(doc.data())
+        })
+    });
+    
+    // Get Open Games
+    let openGames = ref.where('state', '<', STATE.OPEN).orderBy('state');
+
+    if (openGames) {
+        let games = document.getElementById('opengames');
+        games.innerHTML = openGames;
+    }
 }
 
 //--------------------------------------------------------------
 // Join a game.
 //--------------------------------------------------------------
-function joinGame(key) {
-    let user = auth.currentUser;
-    let gameRef = ref.child(key);
+let gridRef = db.collection('Games');
 
-    gameRef.transation(function(game) {
+function joinGame(key) {
+
+    let user = auth.currentUser;
+    let gameRef = ref.doc(key);
+
+    gameRef.runTransation(function(game) {
         if (!game.joiner) {
             game.state = STATE.JOINED;
             game.joiner = {uid: user.uid, userName: user.email}
@@ -69,20 +82,26 @@ function joinGame(key) {
     })
 }
 
-//--------------------------------------------------------------
-// Show a list of open games.
-//--------------------------------------------------------------
-let openGames = ref.orderBy('state').equalTo(STATE.OPEN);
+gridRef.get().then(function(doc) {
+    if (doc.exists) {
+        console.log('Document data: ', doc.data());
+    } else {
+        // undefined
+        console.log('No such document.')
+    }
+}).catch(function(error) {
+    console.log('Error getting document: ', error);
+});
 
 //--------------------------------------------------------------
-// Show a list of open games.
+// Send Board Value
 //--------------------------------------------------------------
 
 // Get the values of the users board.
-let gridRef = ref.doc(gameId).collection('user').doc('board');
+// let gridRef = ref.doc(gameId).collection('user').doc('board');
 
 // Get the values of the opponents board.
-let oppGrid = ref.doc(gameId).collection('user').doc('board');
+// let oppGrid = ref.doc(gameId).collection('user').doc('board');
 
 function monitorOpponent() {
     oppGrid.onSnapshot(function (doc) {

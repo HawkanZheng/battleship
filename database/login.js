@@ -35,6 +35,9 @@ function createUser() {
 
     }).catch(function (error) {
         // Handle Errors here.
+        if (password.length < 6) {
+            window.alert('Password needs to be at least 6 characters.');
+        }
         var errorCode = error.code;
         var errorMessage = error.message;
         // ...
@@ -85,7 +88,7 @@ function logout() {
 //------------------------------------------------------ 
 
 let user = firebase.auth().currentUser;
-let email, pass;
+let email, curentGame;
 
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -94,11 +97,11 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     // user information 
     userEmail = user.email;
-    pass = user.password;
     uid = user.uid;
 
     // Add the user info to the database.
     db.collection('Users').doc(uid).set({
+        // CurrGameId: currentGame,
         email: userEmail,
         UID: uid
     }).then(function() {
@@ -114,7 +117,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   });
 
 //------------------------------------------------------
-// Login Anonymous 
+// Login Anonymous (OPTIONAL)
 //------------------------------------------------------ 
 
 // Allow user to sign in as guest.
