@@ -2,14 +2,19 @@
 const T_HEIGHT = 10;
 const T_WIDTH = 12;
 
+//Ship sizes
+const SIZE5 = 5;
+const SIZE4 = 4;
+const SIZE3 = 3;
+
 //Number to needed to conver char to corresponding int
 const OFFSET = 64;
 //Battle ship placement input text and button
-let placeText1 = document.getElementById("setup1");
-let placeText2 = document.getElementById("setup2");
-let placeText3 = document.getElementById("setup3");
-let placeText4 = document.getElementById("setup4");
-let placeText5 = document.getElementById("setup5");
+let placeText5 = document.getElementById("setup1");
+let placeText4A = document.getElementById("setup2");
+let placeText4B = document.getElementById("setup3");
+let placeText3A = document.getElementById("setup4");
+let placeText3B = document.getElementById("setup5");
 let placeBtn = document.getElementById("place");
 
 //Array of string values for the columns
@@ -21,7 +26,46 @@ let coorArr = [];
 //2D Array for user coordinates
 var userArr = new Array(T_HEIGHT);
 
-//Generate initial 11x9 Grid
+//Ship object variables
+let ship5;
+let ship4A;
+let ship4B;
+let ship3A;
+let ship3B;
+
+//Constructor for ship object
+function Ship(size, location) {
+
+    //Ship size, how many spaces it spans
+    this.size = size;
+
+    //Coordinates of the ship in the 2D array, an array with for ints
+    //syntax: [start row, start column, end column, end row]
+    this.location = location;
+
+    //Boolean that determines if ship is sunk or not
+    this.sunk = false;
+
+    //Returns true is boat is correct size
+    this.isCorrectSize = function () {
+        let correct = false;
+
+        //If ship is horizontal
+        if (location[0] == location[2]) {
+            if (this.size == (Math.abs(location[1] - location[3]) + 1)) {
+                correct = true;
+            }
+
+            //If ship is vertical
+        } else if (location[1] == location[3]) {
+            if (this.size == (Math.abs(location[0] - location[2]) + 1))
+                correct = true;
+        }
+        return correct;
+    }
+}
+
+//Generate initial 11x9 Grid with ships in placed in green
 function gridCreate() {
     let body = document.getElementsByTagName('body')[0];
     let tbl = document.createElement('table');
@@ -50,7 +94,7 @@ function gridCreate() {
                 td.id = String.fromCharCode('A'.charCodeAt(0) + j - 1) + i;
 
                 //Make battleships green
-                if(i > 0 && j > 0 && userArr[i][j] == 1){
+                if (i > 0 && j > 0 && userArr[i][j] == 1) {
                     td.style.backgroundColor = "green";
                 }
             }
@@ -64,47 +108,61 @@ function gridCreate() {
     body.appendChild(tbl)
 }
 
+//Create a ship
+function createShip(coor, size){
+    //Get coordinates ship
+    let shipX1 = getXCoor(coor, 0);
+    let shipY1 = getYCoor(coor, 1);
+    let shipX2 = getXCoor(coor, 3);
+    let shipY2 = getYCoor(coor, 4);
+    let location = [shipX1, shipY1, shipX2, shipY2];
+    //Create ship
+    return new Ship(size, location);
+
+}
+
 //Setup board with ships in place
 function setBoard() {
-    //coorArr = [];
-    //Get input string
-    let coor = placeText1.value + placeText2.value + placeText3.value +
-        placeText4.value + placeText5.value;
 
-    //Ship 1
-    getXCoor(coor, 0);
-    getYCoor(coor, 1);
-    getXCoor(coor, 3);
-    getYCoor(coor, 4);
-    //Ship 2
-    getXCoor(coor, 5);
-    getYCoor(coor, 6);
-    getXCoor(coor, 8);
-    getYCoor(coor, 9);
-    //Ship 3
-    getXCoor(coor, 10);
-    getYCoor(coor, 11);
-    getXCoor(coor, 13);
-    getYCoor(coor, 14);
-    //Ship 4
-    getXCoor(coor, 15);
-    getYCoor(coor, 16);
-    getXCoor(coor, 18);
-    getYCoor(coor, 19);
-    //Ship 5
-    getXCoor(coor, 20);
-    getYCoor(coor, 21);
-    getXCoor(coor, 23);
-    getYCoor(coor, 24);
+    //Get input strings
+    //Coordinates for 5 unit ship
+    let coor5 = placeText5.value;
+    //Coordinates for 4 unit ships
+    let coor4A = placeText4A.value;
+    let coor4B = placeText4B.value;
+    //Coordinates for 4 unit ships
+    let coor3A = placeText3A.value;
+    let coor3B = placeText3B.value
+
+    //Create 5 unit ship
+    ship5 = createShip(coor5, SIZE5);
+    console.log(ship5.isCorrectSize());
+    //Create 4 unit ships
+    ship4A = createShip(coor4A, SIZE4);
+    console.log(ship4A.isCorrectSize());
+    ship4B = createShip(coor4B, SIZE4);
+    console.log(ship4B.isCorrectSize());
+    //Create 3 unit ships
+    ship3A = createShip(coor3A, SIZE3);
+    console.log(ship3A.isCorrectSize());
+    ship3B = createShip(coor3B, SIZE3); 
+    console.log(ship3B.isCorrectSize());
+
+    //Check for valid ship sizes, if valid start game
+    if(ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() 
+        && ship3A.isCorrectSize() && ship3B.isCorrectSize()){
+            //Generate 2D array representing ship placement
+            createPostitionArr();
+
+            //Generate grid with ships placed
+            gridCreate();
+
+            //Hide startup stuff
+            hideStartup(); 
+        } else {
+            window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
+        }
     
-    //Generate 2D array representing ship placement
-    createPostitionArr();
-
-    //Generate grid with ships placed
-    gridCreate();
-
-    //Hide startup stuff
-    hideStartup();
 }
 
 //Get x coordinate from input
@@ -113,11 +171,12 @@ function getXCoor(str, index) {
     let startX = str[index];
     //Invalid input of first char
     if (colArr.indexOf(startX) == -1) {
-        window.alert("Invalid input.");
+        window.alert("Invalid input. Please re-enter coordinates.");
         return;
     } else {
         coorArr.push(startX.charCodeAt(0) - OFFSET);
     }
+    return (startX.charCodeAt(0) - OFFSET);
 }
 
 //Get y coordinate from input
@@ -125,12 +184,14 @@ function getYCoor(str, index) {
     //Start point y cooridinate
     let startY = parseInt(str[index]);
     if (startY < 1 || startY > 9) {
-        window.alert("Invalid input.");
+        window.alert("Invalid input. Please re-enter coordinates.");
         return;
     } else {
         coorArr.push(startY);
     }
+    return startY;
 }
+
 
 //Generate of 2D array of 0s and 1s. 1 represents the battleship
 function createPostitionArr() {
@@ -158,16 +219,14 @@ function createPostitionArr() {
 
             //Position Ship 4
             else if (((i >= coorArr[13] && i <= coorArr[15]) || (i <= coorArr[13] && i >= coorArr[15])) &&
-            ((j >= coorArr[12] && j <= coorArr[14]) || (j <= coorArr[12] && j >= coorArr[14]))) {
-                    userArr[i][j] = 1;
+                ((j >= coorArr[12] && j <= coorArr[14]) || (j <= coorArr[12] && j >= coorArr[14]))) {
+                userArr[i][j] = 1;
             }
             //Position Ship 5
             else if (((i >= coorArr[17] && i <= coorArr[19]) || (i <= coorArr[17] && i >= coorArr[19])) &&
-            ((j >= coorArr[16] && j <= coorArr[18]) || (j <= coorArr[16] && j >= coorArr[18]))) {
-                    userArr[i][j] = 1;
-            } 
-
-            else {
+                ((j >= coorArr[16] && j <= coorArr[18]) || (j <= coorArr[16] && j >= coorArr[18]))) {
+                userArr[i][j] = 1;
+            } else {
                 userArr[i][j] = 0;
             }
         }
@@ -177,11 +236,11 @@ function createPostitionArr() {
 //Hide startup info
 function hideStartup() {
     placeBtn.style.display = "none";
-    placeText1.style.display = "none";
-    placeText2.style.display = "none";
-    placeText3.style.display = "none";
-    placeText4.style.display = "none";
     placeText5.style.display = "none";
+    placeText4A.style.display = "none";
+    placeText4B.style.display = "none";
+    placeText3A.style.display = "none";
+    placeText3B.style.display = "none";
 
     //hide initial grid
     document.getElementById("grid").style.display = "none";
@@ -191,3 +250,35 @@ function hideStartup() {
 }
 
 placeBtn.onclick = setBoard;
+
+
+function Ship(size, location) {
+
+    //Ship size, how many spaces it spans
+    this.size = size;
+
+    //Coordinates of the ship in the 2D array, an array with for ints
+    //syntax: [start row, start column, end column, end row]
+    this.location = location;
+
+    //Boolean that determines if ship is sunk or not
+    this.sunk = false;
+
+    //Returns true is boat is correct size
+    this.isCorrectSize = function () {
+        let correct = false;
+
+        //If ship is horizontal
+        if (location[0] == location[2]) {
+            if (this.size == (Math.abs(location[1] - location[3]) + 1)) {
+                correct = true;
+            }
+
+            //If ship is vertical
+        } else if (location[1] == location[3]) {
+            if (this.size == (Math.abs(location[0] - location[2]) + 1))
+                correct = true;
+        }
+        return correct;
+    }
+}
