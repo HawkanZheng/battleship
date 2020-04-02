@@ -234,33 +234,3 @@ function hideStartup() {
 placeBtn.onclick = setBoard;
 
 
-function Ship(size, location) {
-
-    //Ship size, how many spaces it spans
-    this.size = size;
-
-    //Coordinates of the ship in the 2D array, an array with for ints
-    //syntax: [start row, start column, end column, end row]
-    this.location = location;
-
-    //Boolean that determines if ship is sunk or not
-    this.sunk = false;
-
-    //Returns true is boat is correct size
-    this.isCorrectSize = function () {
-        let correct = false;
-
-        //If ship is horizontal
-        if (location[0] == location[2]) {
-            if (this.size == (Math.abs(location[1] - location[3]) + 1)) {
-                correct = true;
-            }
-
-            //If ship is vertical
-        } else if (location[1] == location[3]) {
-            if (this.size == (Math.abs(location[0] - location[2]) + 1))
-                correct = true;
-        }
-        return correct;
-    }
-}
