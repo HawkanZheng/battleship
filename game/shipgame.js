@@ -233,7 +233,7 @@ function hideStartup() {
 
 //Check for overlap
 function overlap(arr1, arr2){
-    ship3A.location.
+    ship3A.location
 }
 
 placeBtn.onclick = setBoard;
