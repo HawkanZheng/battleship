@@ -30,7 +30,7 @@ function createUser() {
 
     auth.createUserWithEmailAndPassword(email, password).then(function () {
 
-        // Send them to game page.
+        // Send them to the landing page.
         location.replace('game.html');
 
     }).catch(function (error) {
@@ -62,7 +62,7 @@ function login() {
             console.log("not logged in");
         } else {
             // user is signed in, send to game page.
-            window.location.replace('game.html');
+            window.location.replace('landingPage.html');
         }
     }).catch(function (error) {
         // Handle Errors here.
