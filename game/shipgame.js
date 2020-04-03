@@ -94,6 +94,7 @@ function Ship(size, location, index) {
 function gridCreate(arr, type) {
     let body = document.getElementsByTagName('body')[0];
     let tbl = document.createElement('table');
+    
     tbl.setAttribute('border', '1');
     let tbdy = document.createElement('tbody');
 
@@ -105,6 +106,15 @@ function gridCreate(arr, type) {
         for (let j = 0; j < T_WIDTH; j++) {
             let td = document.createElement('td');
 
+            //Label Grids
+            if(i == 0 && j == 0){
+                if (type == 0){
+                    td.innerHTML = "Player Grid";
+                } else{
+                    td.innerHTML = "Enemy Grid";
+                }
+                
+            }
             //Vertical labels
             if (i == 0 && !(j == 0)) {
 
@@ -126,12 +136,7 @@ function gridCreate(arr, type) {
                     //Give unique IDs to cells, computer
                     td.id = "" + 0 + j + i;
                 }
-
-
-
             }
-
-
             tr.appendChild(td)
         }
         tbdy.appendChild(tr);
