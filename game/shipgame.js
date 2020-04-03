@@ -447,22 +447,20 @@ function showPlay() {
 
 //Starts the game
 function userFire() {
-    // if (turn) {
     hit(computerArr);
-    //turn = false;
-    //} else {
-    //window.alert("Your opponent is playing, please wait for your turn!")
-    // }
 }
 
 //Gets the targeted coordinates
 function getTarget() {
+    //Gets the value of the target input
     let targetValue = targetIn.value;
+    //Validates the user input
     if (targetValue.length == 2) {
         let targetX = getXCoor(targetValue, 0);
         let targetY = getYCoor(targetValue, 1);
         if (targetX >= 1 && targetX <= 11 && targetY >= 1 && targetY <= 9) {
             let targetCoor = [targetX, targetY];
+            //Returns the input coordinate
             return targetCoor;
         } else {
             window.alert("Invalid input. Please re-enter coordinate.");
@@ -480,13 +478,14 @@ function hit(arr) {
     let hitLocation = getTarget();
     if (hitLocation[0] != 0) {
         let cellId = document.getElementById("" + 0 + hitLocation[0] + hitLocation[1]);
-
+        //Cell turns red if ship is hit
         if (arr[hitLocation[1]][hitLocation[0]] == 1) {
 
             arr[hitLocation[1]][hitLocation[0]] = 0;
             cellId.style.backgroundColor = "red";
             window.alert("Hit!");
         } else {
+            //Cell turns blue or remains red if ship is missed
             if (cellId.style.backgroundColor == "red") {
                 window.alert("Miss!");
             } else {
@@ -494,10 +493,12 @@ function hit(arr) {
                 window.alert("Miss!");
             }
         }
+        //Computer opponent returns fire
         compHit(userArr);
     }
 }
 
+//Generates random target coordinates for computer opponent
 function rndCoor() {
     let rndX = Math.floor((Math.random() * 11) + 1);
     let rndY = Math.floor((Math.random() * 9) + 1);
@@ -506,15 +507,17 @@ function rndCoor() {
     return rndArr;
 }
 
+//Indicates if a targeted coordinate is a hit or a miss for the users board
 function compHit(arr) {
     let hitLocation = rndCoor();
     let cellId = document.getElementById("" + hitLocation[0] + hitLocation[1]);
-
+    //Cell turns red if user ship is hit
     if (arr[hitLocation[1]][hitLocation[0]] == 1) {
         arr[hitLocation[1]][hitLocation[0]] = 0;
         cellId.style.backgroundColor = "red";
         window.alert("Your opponent got a hit. Your turn!");
     } else {
+        //Cell turns blue or remains red if user ship is missed
         if (cellId.style.backgroundColor == "red") {
             window.alert("Your opponent missed. Your turn!");
         } else {
@@ -524,6 +527,6 @@ function compHit(arr) {
     }
 }
 
-
+//Executes relative functions when the buttons are clicked 
 fireBtn.onclick = userFire;
 placeBtn.onclick = setBoard;
