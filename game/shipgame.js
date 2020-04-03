@@ -21,7 +21,10 @@ let placeBtn = document.getElementById("place");
 let colArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 
 //2D Array for user coordinates
-var userArr = new Array(T_HEIGHT);
+let userArr;
+
+//2D Array for user coordinates
+let computerArr;
 
 //Ship object variables
 let ship5;
@@ -29,6 +32,13 @@ let ship4A;
 let ship4B;
 let ship3A;
 let ship3B;
+
+//Opponent ship object variables
+let compShip5;
+let compShip4A;
+let compShip4B;
+let compShip3A;
+let compShip3B;
 
 //Constructor for ship object
 function Ship(size, location) {
@@ -63,7 +73,8 @@ function Ship(size, location) {
 }
 
 //Generate initial 11x9 Grid with ships in placed in green
-function gridCreate() {
+//Parameters: 2D array and int called type respresenting user(0) or computer opponent(1)
+function gridCreate(arr, type) {
     let body = document.getElementsByTagName('body')[0];
     let tbl = document.createElement('table');
     tbl.setAttribute('border', '1');
@@ -87,13 +98,20 @@ function gridCreate() {
                 td.innerHTML = i;
             } else {
 
-                //Give unique IDs to cells
-                td.id = String.fromCharCode('A'.charCodeAt(0) + j - 1) + i;
-
-                //Make battleships green
-                if (i > 0 && j > 0 && userArr[i][j] == 1) {
-                    td.style.backgroundColor = "green";
+                if (type == 0) {
+                    //Give unique IDs to cells, user
+                    td.id = "" + j + i;
+                    //Make battleships green
+                    if (i > 0 && j > 0 && arr[i][j] == 1) {
+                        td.style.backgroundColor = "green";
+                    }
+                } else {
+                    //Give unique IDs to cells, computer
+                    td.id = "" + 0 + j + i;
                 }
+
+
+
             }
 
 
@@ -145,11 +163,20 @@ function setBoard() {
         ship3A.isCorrectSize() && ship3B.isCorrectSize()) {
         //check if any ships are overlapped
         if (!overlap()) {
-            //Generate 2D array representing ship placement
-            createPostitionArr();
 
+            //Array of ships
+            let ships = [ship5, ship4A, ship4B, ship3A, ship3B];
+
+            //Generate 2D array representing user ship placement
             //Generate grid with ships placed
-            gridCreate();
+            userArr = createPositionArr(ships)
+            gridCreate(userArr, 0);
+
+            //Generate 2D array representing computer opponent ship placement
+            //Generate computer opponent grid
+            computerArr = createPositionArr(loadOpponentShips());
+            console.log(computerArr);
+            gridCreate(computerArr, 1);
 
             //Hide startup stuff
             hideStartup();
@@ -188,43 +215,45 @@ function getYCoor(str, index) {
 
 
 //Generate of 2D array of 0s and 1s. 1 represents the battleship
-function createPostitionArr() {
+function createPositionArr(arr) {
+    let arr2D = new Array(T_HEIGHT);
     for (let i = 1; i < T_HEIGHT; i++) {
-        userArr[i] = new Array(T_WIDTH);
+        arr2D[i] = new Array(T_WIDTH);
         for (let j = 1; j < T_WIDTH; j++) {
 
             //Position 5 unit ship 
-            if (((i >= ship5.location[1] && i <= ship5.location[3]) || (i <= ship5.location[1] && i >= ship5.location[3])) &&
-                ((j >= ship5.location[0] && j <= ship5.location[2]) || (j <= ship5.location[0] && j >= ship5.location[2]))) {
-                userArr[i][j] = 1;
+            if (((i >= arr[0].location[1] && i <= arr[0].location[3]) || (i <= arr[0].location[1] && i >= arr[0].location[3])) &&
+                ((j >= arr[0].location[0] && j <= arr[0].location[2]) || (j <= arr[0].location[0] && j >= arr[0].location[2]))) {
+                arr2D[i][j] = 1;
             }
 
             //Position first 4 unit ship 
-            else if (((i >= ship4A.location[1] && i <= ship4A.location[3]) || (i <= ship4A.location[1] && i >= ship4A.location[3])) &&
-                ((j >= ship4A.location[0] && j <= ship4A.location[2]) || (j <= ship4A.location[0] && j >= ship4A.location[2]))) {
-                userArr[i][j] = 1;
+            else if (((i >= arr[1].location[1] && i <= arr[1].location[3]) || (i <= arr[1].location[1] && i >= arr[1].location[3])) &&
+                ((j >= arr[1].location[0] && j <= arr[1].location[2]) || (j <= arr[1].location[0] && j >= arr[1].location[2]))) {
+                arr2D[i][j] = 1;
             }
 
             //Position second 4 unit ship
-            else if (((i >= ship4B.location[1] && i <= ship4B.location[3]) || (i <= ship4B.location[1] && i >= ship4B.location[3])) &&
-                ((j >= ship4B.location[0] && j <= ship4B.location[2]) || (j <= ship4B.location[0] && j >= ship4B.location[2]))) {
-                userArr[i][j] = 1;
+            else if (((i >= arr[2].location[1] && i <= arr[2].location[3]) || (i <= arr[2].location[1] && i >= arr[2].location[3])) &&
+                ((j >= arr[2].location[0] && j <= arr[2].location[2]) || (j <= arr[2].location[0] && j >= arr[2].location[2]))) {
+                arr2D[i][j] = 1;
             }
 
             //Position first 3 unit ship
-            else if (((i >= ship3A.location[1] && i <= ship3A.location[3]) || (i <= ship3A.location[1] && i >= ship3A.location[3])) &&
-                ((j >= ship3A.location[0] && j <= ship3A.location[2]) || (j <= ship3A.location[0] && j >= ship3A.location[2]))) {
-                userArr[i][j] = 1;
+            else if (((i >= arr[3].location[1] && i <= arr[3].location[3]) || (i <= arr[3].location[1] && i >= arr[3].location[3])) &&
+                ((j >= arr[3].location[0] && j <= arr[3].location[2]) || (j <= arr[3].location[0] && j >= arr[3].location[2]))) {
+                arr2D[i][j] = 1;
             }
             //Position second 3 unit ship
-            else if (((i >= ship3B.location[1] && i <= ship3B.location[3]) || (i <= ship3B.location[1] && i >= ship3B.location[3])) &&
-                ((j >= ship3B.location[0] && j <= ship3B.location[2]) || (j <= ship3B.location[0] && j >= ship3B.location[2]))) {
-                userArr[i][j] = 1;
+            else if (((i >= arr[4].location[1] && i <= arr[4].location[3]) || (i <= arr[4].location[1] && i >= arr[4].location[3])) &&
+                ((j >= arr[4].location[0] && j <= arr[4].location[2]) || (j <= arr[4].location[0] && j >= arr[4].location[2]))) {
+                arr2D[i][j] = 1;
             } else {
-                userArr[i][j] = 0;
+                arr2D[i][j] = 0;
             }
         }
     }
+    return arr2D;
 }
 
 //Hide startup info
@@ -319,3 +348,85 @@ function compareCoor(aShip, shipArr) {
 }
 
 placeBtn.onclick = setBoard;
+
+//Generate random ship object of specified size
+function randomShipGenerator(size) {
+    //Location coordinate array. [startX, startY, endX, endY]
+    let locArr = [0, 0, 0, 0];
+    //Determine if ship is vertical or horizontal, 0 for vertical, 1 for horizontal
+    let orientation = Math.floor((Math.random() * 2));
+
+    //If vertical
+    if (orientation == 0) {
+        //Generate random column, x coordinate from 1 to 11
+        let x = Math.floor((Math.random() * (T_WIDTH - 1)) + 1);
+        locArr[0] = x;
+        locArr[2] = x;
+        //Generate random start point for y coordinate, from 1 to 9
+        let startY = Math.floor((Math.random() * (T_HEIGHT - 1)) + 1);
+        locArr[1] = startY;
+        //Calculate end point for y coordinate
+        let endY = startY + (size - 1);
+        //if out of bounds
+        if (endY >= T_HEIGHT) {
+            endY = startY - (size - 1);
+        }
+        locArr[3] = endY;
+        //If horizontal
+    } else {
+        //Generate random row, y coordinate from 1 to 9
+        let y = Math.floor((Math.random() * (T_HEIGHT - 1)) + 1);
+        locArr[1] = y;
+        locArr[3] = y;
+        //Generate random start point for x coordinate, from 1 to 11
+        let startX = Math.floor((Math.random() * (T_WIDTH - 1)) + 1);
+        locArr[0] = startX;
+        //Calculate end point for x coordinate
+        let endX = startX + (size - 1);
+        //if out of bounds
+        if (endX >= T_WIDTH) {
+            endX = startX - (size - 1);
+        }
+        locArr[2] = endX;
+    }
+    //Create Ship with Location array of start and end coordinates, [Start X, Start Y, End X, End Y]
+    return new Ship(size, locArr);
+}
+
+//Generate all computer opponent ships
+function loadOpponentShips() {
+    //comparison array
+    let compArr = [];
+    //Generate 3 unit ship
+    compShip3A = randomShipGenerator(SIZE3);
+    compArr.push(compShip3A);
+    //Generate 3 unit ship
+    compShip3B = randomShipGenerator(SIZE3);
+    //Generate new ship until not overlapping
+    while (compareCoor(compShip3B, compArr)) {
+        compShip3B = randomShipGenerator(SIZE3);
+    }
+    compArr.push(compShip3B);
+    //Generate 4 unit ship
+    compShip4A = randomShipGenerator(SIZE4);
+    //Generate new ship until not overlapping
+    while (compareCoor(compShip4A, compArr)) {
+        compShip4A = randomShipGenerator(SIZE3);
+    }
+    compArr.push(compShip4A);
+    //Generate 4 unit ship
+    compShip4B = randomShipGenerator(SIZE4);
+    //Generate new ship until not overlapping
+    while (compareCoor(compShip4B, compArr)) {
+        compShip4B = randomShipGenerator(SIZE4);
+    }
+    compArr.push(compShip4B);
+    //Generate 5 unit ship
+    let compShip5 = randomShipGenerator(SIZE5);
+    //Generate new ship until not overlapping
+    while (compareCoor(compShip5, compArr)) {
+        compShip5 = randomShipGenerator(SIZE5);
+    }
+    compArr.push(compShip5);
+    return compArr;
+}
