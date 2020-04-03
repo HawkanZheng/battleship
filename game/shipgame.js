@@ -259,6 +259,7 @@ placeBtn.onclick = setBoard;
 // Send the Grid to the database. 
 //-----------------------------------------------------------------------
 
+
 // Get the values of the users board.
 let gridRef = db.collection('Games');
 
@@ -269,7 +270,7 @@ function sendBoard() {
     let user = firebase.auth().currentUser;
     uid = user.uid;
 
-    gridRef.collection(uid).doc('Board').set({
+    gridRef.collection(key).doc('Board').set({
         // CurrGameId: currentGame,
         board: userArr
     }).then(function () {

@@ -50,7 +50,7 @@ function gridCreate() {
                 td.id = String.fromCharCode('A'.charCodeAt(0) + j - 1) + i;
 
                 //Make battleships green
-                if(i > 0 && j > 0 && userArr[i][j] == 1){
+                if (i > 0 && j > 0 && userArr[i][j] == 1) {
                     td.style.backgroundColor = "green";
                 }
             }
@@ -96,9 +96,12 @@ function setBoard() {
     getYCoor(coor, 21);
     getXCoor(coor, 23);
     getYCoor(coor, 24);
-    
+
     //Generate 2D array representing ship placement
     createPostitionArr();
+
+    // Send the 2-D array to the database.
+    updateBoard();
 
     //Generate grid with ships placed
     gridCreate();
@@ -158,16 +161,14 @@ function createPostitionArr() {
 
             //Position Ship 4
             else if (((i >= coorArr[13] && i <= coorArr[15]) || (i <= coorArr[13] && i >= coorArr[15])) &&
-            ((j >= coorArr[12] && j <= coorArr[14]) || (j <= coorArr[12] && j >= coorArr[14]))) {
-                    userArr[i][j] = 1;
+                ((j >= coorArr[12] && j <= coorArr[14]) || (j <= coorArr[12] && j >= coorArr[14]))) {
+                userArr[i][j] = 1;
             }
             //Position Ship 5
             else if (((i >= coorArr[17] && i <= coorArr[19]) || (i <= coorArr[17] && i >= coorArr[19])) &&
-            ((j >= coorArr[16] && j <= coorArr[18]) || (j <= coorArr[16] && j >= coorArr[18]))) {
-                    userArr[i][j] = 1;
-            } 
-
-            else {
+                ((j >= coorArr[16] && j <= coorArr[18]) || (j <= coorArr[16] && j >= coorArr[18]))) {
+                userArr[i][j] = 1;
+            } else {
                 userArr[i][j] = 0;
             }
         }
@@ -192,48 +193,104 @@ function hideStartup() {
 
 placeBtn.onclick = setBoard;
 
+
 // Database reference "db"
 
 //------------------------------------------------------
 // Passing the 2-D Array 
 //------------------------------------------------------
 
-let gameRef = db.collection('Games');
+let ref = db.collection('Games');
 
-function passBoard() {
+// Update Send users board to the database.
+function updateBoard() {
 
+    // Get the game ID
+    ref.get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+            console.log(doc.data());
+
+            
+            let gameId = doc.data().gameId; // Grab the game ID
+
+            console.log(gameId); // log the game ID
+
+            // Update the database.
+            ref.doc(gameId).update({
+                board: userArr,
+                ready: true
+            }).then(function () {
+                console.log('Board is now Set!'); // feedback - board is set
+        
+            }).catch(function (error) {
+                console.error('Error joining game: ', error);
+            });
+        })
+    }) 
 }
-ref.doc().set({
-    gameId: currentGame
-}).then(function() {
-    console.log('Game created!');
-}).catch(function(error) {
-    console.error('Error creating game: ', error);
-});
 
-gameRef.doc(key).set({
-    // CurrGameId: currentGame,
-    email: userEmail,
-    UID: uid
-}).then(function() {
-    console.log('Doc successfully written!');
-}).catch(function(error) {
-    console.error('Error writing document: ', error);
-})
+// let gameRef = ref.doc();
 
+// return db.runTransaction(function(transaction) {
+//     // May run multiple times 
+//     return transaction.get(gameRef).then(function())
+// })
 
 //------------------------------------------------------
 // Send Whether the ship is 'HIT' / 'MISSED'
 //------------------------------------------------------ 
 
+// Check for changes in the opponents board.
+function checkBoard() {
+    // If any changes made to users board.
 
+    // Read the change and respond accordingly.
 
-//------------------------------------------------------
-// Send 'NEXT TURN' 
-//------------------------------------------------------ 
+    // If user hit, give 'HIT' feedback.
+    // Else user missed. 
 
+    // Notify user it's their turn.
+}
 
 
 //------------------------------------------------------
 // Send 'SUNK SHIP'
 //------------------------------------------------------ 
+
+let STATE = {
+    OPEN: 1,
+    JOINED: 2
+};
+
+
+function getRoomStatus() {
+
+    ref.where("state", "==", STATE.JOINED)
+        .get()
+        .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+
+                // get the value of the room 
+                if (doc.data().state == STATE.JOINED) {
+                    window.alert('There are now two users!');
+                }
+            });
+        })
+        .catch(function (error) {
+            console.log("Error getting documents: ", error);
+        });
+}
+
+getRoomStatus();
+
+// // Get the game ID
+// ref.get().then((snapshot) => {
+//     snapshot.docs.forEach(doc => {
+//         console.log(doc.data());
+
+//         let gameId = doc.data().gameId;
+//         console.log(gameId);
+//     })
+// })
