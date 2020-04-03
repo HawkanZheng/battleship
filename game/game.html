@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BattleShip</title>
-    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-database.js"></script>
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <title>Battleship</title>
 </head>
 <link rel="stylesheet" type="text/css" href="shipgame.css">
 
@@ -28,8 +24,8 @@
         <br>
         <input type="button" id="place" value="Place" class="setup">
     </div>
-    <div>
-        <label for="target" class="guess">Enter target coordinate:</label>
+    <div class="fireBox">
+        <label for="target" class="guess text">Enter target coordinate:</label>
         <input type="text" id="target" placeholder="Enter coordinate" class="guess"></br>
         <input type="button" id="fire" value="Fire" class="guess">
     </div>

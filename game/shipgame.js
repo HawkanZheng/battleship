@@ -65,8 +65,16 @@ let compShip4B;
 let compShip3A;
 let compShip3B;
 
+//Sunk count
+let userShipsSunk = 0;
+let compShipsSunk = 0;
+
+//Active ship arrays
+let activeUserShips;
+let activeCompShips;
+
 //Constructor for ship object
-function Ship(size, location) {
+function Ship(size, location, index) {
 
     //Ship size, how many spaces it spans
     this.size = size;
@@ -77,6 +85,9 @@ function Ship(size, location) {
 
     //Boolean that determines if ship is sunk or not
     this.sunk = false;
+
+    //Index of position in active ships
+    this.index = index;
 
     //Returns true is boat is correct size
     this.isCorrectSize = function () {
@@ -102,6 +113,7 @@ function Ship(size, location) {
 function gridCreate(arr, type) {
     let body = document.getElementsByTagName('body')[0];
     let tbl = document.createElement('table');
+    
     tbl.setAttribute('border', '1');
     let tbdy = document.createElement('tbody');
 
@@ -113,6 +125,15 @@ function gridCreate(arr, type) {
         for (let j = 0; j < T_WIDTH; j++) {
             let td = document.createElement('td');
 
+            //Label Grids
+            if(i == 0 && j == 0){
+                if (type == 0){
+                    td.innerHTML = "Player Grid";
+                } else{
+                    td.innerHTML = "Enemy Grid";
+                }
+                
+            }
             //Vertical labels
             if (i == 0 && !(j == 0)) {
 
@@ -134,12 +155,7 @@ function gridCreate(arr, type) {
                     //Give unique IDs to cells, computer
                     td.id = "" + 0 + j + i;
                 }
-
-
-
             }
-
-
             tr.appendChild(td)
         }
         tbdy.appendChild(tr);
@@ -148,8 +164,8 @@ function gridCreate(arr, type) {
     body.appendChild(tbl)
 }
 
-//Create a ship
-function createShip(coor, size) {
+//Create a ship with specific size and active ships index
+function createShip(coor, size, index) {
     //Get coordinates ship
     let shipX1 = getXCoor(coor, 0);
     let shipY1 = getYCoor(coor, 1);
@@ -157,7 +173,7 @@ function createShip(coor, size) {
     let shipY2 = getYCoor(coor, 4);
     let location = [shipX1, shipY1, shipX2, shipY2];
     //Create ship
-    return new Ship(size, location);
+    return new Ship(size, location, index);
 
 }
 
@@ -174,42 +190,55 @@ function setBoard() {
     let coor3A = placeText3A.value;
     let coor3B = placeText3B.value
 
-    //Create 5 unit ship
-    ship5 = createShip(coor5, SIZE5);
-    //Create 4 unit ships
-    ship4A = createShip(coor4A, SIZE4);
-    ship4B = createShip(coor4B, SIZE4);
-    //Create 3 unit ships
-    ship3A = createShip(coor3A, SIZE3);
-    ship3B = createShip(coor3B, SIZE3);
+    if (coor5.length == 5 || coor4A.length ==  5 || coor4B.length ==  5 
+        || coor3A.length ==  5 || coor3B.length ==  5) {
+        //Create 5 unit ship
+        ship5 = createShip(coor5, SIZE5, 0);
+        //Create 4 unit ships
+        ship4A = createShip(coor4A, SIZE4, 1);
+        ship4B = createShip(coor4B, SIZE4, 2);
+        //Create 3 unit ships
+        ship3A = createShip(coor3A, SIZE3, 3);
+        ship3B = createShip(coor3B, SIZE3, 4);
 
-    //Check for valid ship sizes, if valid start game
-    if (ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() &&
-        ship3A.isCorrectSize() && ship3B.isCorrectSize()) {
-        //check if any ships are overlapped
-        if (!overlap()) {
+        //Check for valid ship sizes, if valid start game
+        if (ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() &&
+            ship3A.isCorrectSize() && ship3B.isCorrectSize()) {
+            //check if any ships are overlapped
+            if (!overlap()) {
 
-            //Array of ships
-            let ships = [ship5, ship4A, ship4B, ship3A, ship3B];
+                //Array of ships
+                let ships = [ship5, ship4A, ship4B, ship3A, ship3B];
 
-            //Generate 2D array representing user ship placement
-            //Generate grid with ships placed
-            userArr = createPositionArr(ships)
-            gridCreate(userArr, 0);
+                //Generate 2D array representing user ship placement
+                //Generate grid with ships placed
+                userArr = createPositionArr(ships)
+                gridCreate(userArr, 0);
 
-            //Generate 2D array representing computer opponent ship placement
-            //Generate computer opponent grid
-            computerArr = createPositionArr(loadOpponentShips());
-            console.log(computerArr);
-            gridCreate(computerArr, 1);
+                //Generate 2D array representing computer opponent ship placement
+                //Generate computer opponent grid
+                computerArr = createPositionArr(loadOpponentShips());
+                console.log(computerArr);
+                gridCreate(computerArr, 1);
 
-            //Hide startup stuff
-            hideStartup();
-            showPlay();
+                //Load ships into active ships array
+                activeCompShips = [compShip5, compShip4A, compShip4B, compShip3A, compShip3B];
+                activeUserShips = [ship5, ship4A, ship4B, ship3A, ship3B];
+
+                console.log(activeUserShips);
+                console.log(activeCompShips);
+                //Hide startup stuff
+                hideStartup();
+
+                //Show fire button
+                showPlay();
+            } else {
+                window.alert("One or more ships are overlapping. Please re-enter coordinates.")
+            }
+
         } else {
-            window.alert("One or more ships are overlapping. Please re-enter coordinates.")
+            window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
         }
-
     } else {
         window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
     }
@@ -373,8 +402,8 @@ function compareCoor(aShip, shipArr) {
     return overlapping;
 }
 
-//Generate random ship object of specified size
-function randomShipGenerator(size) {
+//Generate random ship object of specified size and active ships index
+function randomShipGenerator(size, index) {
     //Location coordinate array. [startX, startY, endX, endY]
     let locArr = [0, 0, 0, 0];
     //Determine if ship is vertical or horizontal, 0 for vertical, 1 for horizontal
@@ -414,7 +443,7 @@ function randomShipGenerator(size) {
         locArr[2] = endX;
     }
     //Create Ship with Location array of start and end coordinates, [Start X, Start Y, End X, End Y]
-    return new Ship(size, locArr);
+    return new Ship(size, locArr, index);
 }
 
 //Generate all computer opponent ships
@@ -422,34 +451,34 @@ function loadOpponentShips() {
     //comparison array
     let compArr = [];
     //Generate 3 unit ship
-    compShip3A = randomShipGenerator(SIZE3);
+    compShip3A = randomShipGenerator(SIZE3, 3);
     compArr.push(compShip3A);
     //Generate 3 unit ship
-    compShip3B = randomShipGenerator(SIZE3);
+    compShip3B = randomShipGenerator(SIZE3, 4);
     //Generate new ship until not overlapping
     while (compareCoor(compShip3B, compArr)) {
-        compShip3B = randomShipGenerator(SIZE3);
+        compShip3B = randomShipGenerator(SIZE3, 4);
     }
     compArr.push(compShip3B);
     //Generate 4 unit ship
-    compShip4A = randomShipGenerator(SIZE4);
+    compShip4A = randomShipGenerator(SIZE4, 1);
     //Generate new ship until not overlapping
     while (compareCoor(compShip4A, compArr)) {
-        compShip4A = randomShipGenerator(SIZE3);
+        compShip4A = randomShipGenerator(SIZE4, 1);
     }
     compArr.push(compShip4A);
     //Generate 4 unit ship
-    compShip4B = randomShipGenerator(SIZE4);
+    compShip4B = randomShipGenerator(SIZE4, 2);
     //Generate new ship until not overlapping
     while (compareCoor(compShip4B, compArr)) {
-        compShip4B = randomShipGenerator(SIZE4);
+        compShip4B = randomShipGenerator(SIZE4, 2);
     }
     compArr.push(compShip4B);
     //Generate 5 unit ship
-    let compShip5 = randomShipGenerator(SIZE5);
+    compShip5 = randomShipGenerator(SIZE5, 0);
     //Generate new ship until not overlapping
     while (compareCoor(compShip5, compArr)) {
-        compShip5 = randomShipGenerator(SIZE5);
+        compShip5 = randomShipGenerator(SIZE5, 0);
     }
     compArr.push(compShip5);
     return compArr;
@@ -501,11 +530,17 @@ function hit(arr) {
         if (arr[hitLocation[1]][hitLocation[0]] == 1) {
 
             arr[hitLocation[1]][hitLocation[0]] = 0;
+
+            //Check if any computer ships were sunk, if sunk ship is removed from active list
+            //and computer sunk ship count is incremented
+            checkCompSunk();
             cellId.style.backgroundColor = "red";
             window.alert("Hit!");
+            //Checks if game is over
+            gameOver();
         } else {
-            //Cell turns blue or remains red if ship is missed
-            if (cellId.style.backgroundColor == "red") {
+            //Cell turns blue or remains red or blue if ship is missed
+            if (cellId.style.backgroundColor == "red" || cellId.style.backgroundColor == "blue") {
                 window.alert("Miss. You have already targeted this coordinate!");
             } else {
                 cellId.style.backgroundColor = "blue";
@@ -533,8 +568,13 @@ function compHit(arr) {
     //Cell turns red if user ship is hit
     if (arr[hitLocation[1]][hitLocation[0]] == 1) {
         arr[hitLocation[1]][hitLocation[0]] = 0;
+        //Check if any user ships were sunk, if sunk ship is removed from active list
+        //and user sunk ship count is incremented
+        checkUserSunk();
         cellId.style.backgroundColor = "red";
         window.alert("Your opponent got a hit. Your turn!");
+        //Checks if game is over
+        gameOver();
     } else {
         //Cell turns blue or remains red if user ship is missed
         if (cellId.style.backgroundColor == "red") {
@@ -544,6 +584,79 @@ function compHit(arr) {
             window.alert("Your opponent missed. Your turn!");
         }
     }
+}
+
+//Checks if ship is sunk, returns true if sunk
+function isSunk(aShip, arr) {
+    sunk = true;
+    let coorArr = [];
+    let xArr = [];
+    let yArr = [];
+    if (isVertical(aShip)) {
+        let x = aShip.location[0];
+        //Generate arrays of y coordinates
+        for (let i = Math.min(aShip.location[1], aShip.location[3]); i <= Math.max(aShip.location[1], aShip.location[3]); i++) {
+            yArr.push(i);
+        }
+        //check for if boat has remaning lives (1s)
+        for (let j = 0; j < yArr.length; j++) {
+            if (arr[yArr[j]][x] == 1) {
+                sunk = false;
+                break;
+            }
+        }
+        //Horizontal ship
+    } else {
+        let y = aShip.location[1];
+        //Generate arrays of x coordinates
+        for (let i = Math.min(aShip.location[0], aShip.location[2]); i <= Math.max(aShip.location[0], aShip.location[2]); i++) {
+            xArr.push(i);
+        }
+        //check for if boat has remaning lives (1s)
+        for (let j = 0; j < xArr.length; j++) {
+            if (arr[y][xArr[j]] == 1) {
+                sunk = false;
+                break;
+            }
+        }
+    }
+    return sunk;
+}
+
+//Determines if the game is over, either user or computer sunk 5 ships
+function gameOver(){
+    if(compShipsSunk == 5){
+        //User wins
+        window.alert("GAME OVER. YOU WIN!");
+        location.reload();
+    } else if (userShipsSunk == 5){
+        //User loses
+        window.alert("GAME OVER. YOU LOSE!");
+        location.reload();
+    }
+
+}
+
+//Checks if any user ships are sunk, if sunk deletes from active ships 
+function checkUserSunk(){
+    activeUserShips.forEach(function(curr){
+        //If ship is sunk delete from active ships
+        if(curr != undefined && isSunk(curr, userArr)){
+            delete activeUserShips[curr.index];
+            userShipsSunk++;
+        }  
+    });
+}
+
+//Checks if any computer opponent ships are sunk, if sunk deletes from active ships 
+function checkCompSunk(){
+    activeCompShips.forEach(function(curr){
+        //If ship is sunk delete from active ships
+        if(curr != undefined && isSunk(curr, computerArr)){
+            delete activeCompShips[curr.index];
+            compShipsSunk++;
+        }         
+    });
 }
 
 //Executes relative functions when the buttons are clicked 

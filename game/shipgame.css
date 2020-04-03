@@ -1,12 +1,13 @@
-body{
+body {
     background-image: url(images/Ocean.gif);
     background-size: cover;
 }
 
-#body{
+#body {
     margin-top: 50px;
     text-align: center;
 }
+
 button.player {
     width: 30px;
     height: 30px;
@@ -36,12 +37,12 @@ td {
     margin: 4px;
 }
 
-.label{
+.label {
     color: whitesmoke;
     font-size: 20px;
 }
 
-#place{
+#place {
     width: 120px;
     height: 30px;
     background-color: darkgoldenrod;
@@ -50,7 +51,7 @@ td {
     cursor: pointer;
 }
 
-#enterInstruct{
+#enterInstruct {
     color: whitesmoke;
 }
 
@@ -66,7 +67,7 @@ td {
     background-color: blue;
 }
 
-#script{
+#script {
     text-align: center;
 }
 
@@ -74,5 +75,38 @@ table {
     margin-left: auto;
     margin-right: auto;
     margin-top: 50px;
-    color: whitesmoke;
+    color: black;
+    font-weight: bold;
+}
+
+.fireBox {
+    left: 50%;
+    top: 30%;
+    width: 300px;
+    margin-top: -125px;
+    margin-left: -150px;
+    position: absolute;
+}
+
+.text {
+    font-size: 20px;
+    margin-left: 50px;
+}
+
+#target {
+    width: 120px;
+    height: 30px;
+    font-size: 15px;
+    text-align: center;
+    margin-left: 85px;
+}
+
+#fire {
+    width: 80px;
+    height: 30px;
+    background-color: peru;
+    font-size: 20px;
+    border: solid 1px black;
+    border-radius: 10px;
+    margin-left: 105px;
 }
