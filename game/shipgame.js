@@ -54,6 +54,9 @@ let compShipsSunk = 0;
 let activeUserShips;
 let activeCompShips;
 
+//Play music
+document.getElementById("music").play();
+
 //Constructor for ship object
 function Ship(size, location, index) {
 
