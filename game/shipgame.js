@@ -499,5 +499,40 @@ function hit(arr) {
     }
 }
 
+//Checks if ship is sunk, returns true if sunk
+function isSunk(aShip, arr) {
+    sunk = true;
+    let coorArr = [];
+    let xArr = [];
+    let yArr = [];
+    if (isVertical(aShip)) {
+        let x = aShip.location[0];
+        //Generate arrays of y coordinates
+        for (let i = Math.min(aShip.location[1], aShip.location[3]); i <= Math.max(aShip.location[1], aShip.location[3]); i++) {
+            yArr.push(i);
+        }
+        //check for if boat has remaning lives (1s)
+        for (let j = 0; j < yArr.length; j++) {
+            if (arr[x][yArr[j]] == 1) {
+                sunk = false;
+            }
+        }
+        //Horizontal ship
+    } else {
+        let y = aShip.location[1];
+        //Generate arrays of x coordinates
+        for (let i = Math.min(aShip.location[0], aShip.location[2]); i <= Math.max(aShip.location[0], aShip.location[2]); i++) {
+            xArr.push(i);
+        }
+        //check for if boat has remaning lives (1s)
+        for (let j = 0; j < yArr.length; j++) {
+            if (arr[xArr[i]][y] == 1) {
+                sunk = false;
+            }
+        }
+    }
+    return sunk;
+}
+
 fireBtn.onclick = userFire;
 placeBtn.onclick = setBoard;
