@@ -16,6 +16,9 @@ let placeText4B = document.getElementById("setup3");
 let placeText3A = document.getElementById("setup4");
 let placeText3B = document.getElementById("setup5");
 let placeBtn = document.getElementById("place");
+//Target coordinate input text and fire button
+let targetIn = document.getElementById("target");
+let fireBtn = document.getElementById("fire");
 
 //Array of string values for the columns
 let colArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
@@ -23,8 +26,11 @@ let colArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 //2D Array for user coordinates
 let userArr;
 
-//2D Array for user coordinates
+//2D Array for computer coordinates
 let computerArr;
+
+//Boolean variable for turn
+let turn = true;
 
 //Ship object variables
 let ship5;
@@ -180,6 +186,7 @@ function setBoard() {
 
             //Hide startup stuff
             hideStartup();
+            showFire();
         } else {
             window.alert("One or more ships are overlapping. Please re-enter coordinates.")
         }
@@ -347,8 +354,6 @@ function compareCoor(aShip, shipArr) {
     return overlapping;
 }
 
-placeBtn.onclick = setBoard;
-
 //Generate random ship object of specified size
 function randomShipGenerator(size) {
     //Location coordinate array. [startX, startY, endX, endY]
@@ -430,3 +435,59 @@ function loadOpponentShips() {
     compArr.push(compShip5);
     return compArr;
 }
+
+//Displays the firing input elements
+function showFire() {
+    let input = document.getElementsByClassName("guess");
+
+    for (i = 0; i < input.length; i++) {
+        input[i].style.display = "block";
+    }
+}
+
+//Starts the game
+function playGame() {
+    if (turn) {
+        hit();
+        turn = false;
+    } else {
+        window.alert("Your opponent is playing, please wait for your turn!")
+    }
+}
+
+//Gets the targeted coordinates
+function getTarget() {
+    let targetValue = targetIn.value;
+
+    let targetX = getXCoor(targetValue, 0);
+    let targetY = getYCoor(targetValue, 1);
+    if (targetX >= 1 && targetX <= 11 && targetY >= 1 && targetY <= 9) {
+        let targetCoor = [targetX, targetY];
+        return targetCoor;
+    } else {
+        window.alert("Invalid input. Please re-enter coordinate.");
+    }
+}
+
+//Indicates if a targeted coordinate is a hit or a miss
+function hit() {
+    let hitLocation = getTarget();
+    let cellId = document.getElementById("" + 0 + hitLocation[0] + hitLocation[1]);
+
+    if (arr[hitLocation[1]][hitLocation[0]] == 1) {
+
+        arr[hitLocation[1]][hitLocation[0]] = 0;
+        cellId.style.backgroundColor = "red";
+        window.alert("Hit!");
+    } else {
+        if (cellId.style.backgroundColor == "red") {
+            window.alert("Miss!");
+        } else {
+            cellId.style.backgroundColor = "blue";
+            window.alert("Miss!");
+        }
+    }
+}
+
+fireBtn.onclick = playGame;
+placeBtn.onclick = setBoard;

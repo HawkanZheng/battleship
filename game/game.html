@@ -21,8 +21,23 @@
         <input type="text" id="setup4" placeholder="Enter Coordinates" class="setup"></br>
         <label for="setup5" class="setup">3 unit ship:</label>
         <input type="text" id="setup5" placeholder="Enter Coordinates" class="setup"></br>
+        <br>
         <input type="button" id="place" value="Place" class="setup">
     </div>
+    <div>
+        <label for="target" class="guess">Target coordinate:</label>
+        <input type="text" id="target" placeholder="Enter coordinate" class="guess"></br>
+        <input type="button" id="fire" value="Fire" class="guess">
+    </div>
+    <div id="buttons">
+        <label for="greenBtn">Your Ships: </label>
+        <button class="legend" id="greenBtn"></button>
+        <label for="redBtn">Hit: </label>
+        <button class="legend" id="redBtn"></button>
+        <label for="blueBtn">Miss: </label>
+        <button class="legend" id="blueBtn"></button>
+    </div>
+
     <script src="shipgame.js"></script>
 </body>
 
