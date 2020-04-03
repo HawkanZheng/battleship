@@ -1,11 +1,78 @@
-button.player{
+body{
+    background-image: url(images/Ocean.gif);
+    background-size: cover;
+}
+
+#body{
+    margin-top: 50px;
+    text-align: center;
+}
+button.player {
     width: 30px;
     height: 30px;
 }
 
-td{
+td {
     width: 35px;
     height: 35px;
     text-align: center;
-    
+
+}
+
+.guess {
+    display: none;
+}
+
+#legend {
+    position: absolute;
+    top: 10;
+    right: 20;
+    color: whitesmoke;
+}
+
+.buttons {
+    border: none;
+    padding: 15px;
+    margin: 4px;
+}
+
+.label{
+    color: whitesmoke;
+    font-size: 20px;
+}
+
+#place{
+    width: 120px;
+    height: 30px;
+    background-color: darkgoldenrod;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+#enterInstruct{
+    color: whitesmoke;
+}
+
+#greenBtn {
+    background-color: green;
+}
+
+#redBtn {
+    background-color: red;
+}
+
+#BlueBtn {
+    background-color: blue;
+}
+
+#script{
+    text-align: center;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    color: whitesmoke;
 }

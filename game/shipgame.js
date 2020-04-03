@@ -35,6 +35,9 @@ let placeText4B = document.getElementById("setup3");
 let placeText3A = document.getElementById("setup4");
 let placeText3B = document.getElementById("setup5");
 let placeBtn = document.getElementById("place");
+//Target coordinate input text and fire button
+let targetIn = document.getElementById("target");
+let fireBtn = document.getElementById("fire");
 
 //Array of string values for the columns
 let colArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
@@ -42,8 +45,11 @@ let colArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 //2D Array for user coordinates
 let userArr;
 
-//2D Array for user coordinates
+//2D Array for computer coordinates
 let computerArr;
+
+//Boolean variable for turn
+let turn = true;
 
 //Ship object variables
 let ship5;
@@ -199,6 +205,7 @@ function setBoard() {
 
             //Hide startup stuff
             hideStartup();
+            showPlay();
         } else {
             window.alert("One or more ships are overlapping. Please re-enter coordinates.")
         }
@@ -366,8 +373,6 @@ function compareCoor(aShip, shipArr) {
     return overlapping;
 }
 
-placeBtn.onclick = setBoard;
-
 //Generate random ship object of specified size
 function randomShipGenerator(size) {
     //Location coordinate array. [startX, startY, endX, endY]
@@ -450,37 +455,97 @@ function loadOpponentShips() {
     return compArr;
 }
 
-//-----------------------------------------------------------------------
-// Send the Grid to the database. 
-//-----------------------------------------------------------------------
+//Displays the firing input elements
+function showPlay() {
+    let input = document.getElementsByClassName("guess");
 
-// Get the values of the users board.
-let gridRef = db.collection('Games');
-
-// Send board to the database.
-function sendBoard() {
-    
-    // Get the current users UID.
-    let user = firebase.auth().currentUser;
-    uid = user.uid;
-
-    gridRef.collection(key).doc('Board').set({
-        // CurrGameId: currentGame,
-        board: userArr
-    }).then(function () {
-        console.log('Board successfully written!');
-    }).catch(function (error) {
-        console.error('Error sending board info: ', error);
-    });
+    for (i = 0; i < input.length; i++) {
+        input[i].style.display = "block";
+    }
 }
 
-gridRef.get().then(function(doc) {
-    if (doc.exists) {
-        console.log('Document data: ', doc.data());
+//Starts the game
+function userFire() {
+    hit(computerArr);
+}
+
+//Gets the targeted coordinates
+function getTarget() {
+    //Gets the value of the target input
+    let targetValue = targetIn.value;
+    //Validates the user input
+    if (targetValue.length == 2) {
+        let targetX = getXCoor(targetValue, 0);
+        let targetY = getYCoor(targetValue, 1);
+        if (targetX >= 1 && targetX <= 11 && targetY >= 1 && targetY <= 9) {
+            let targetCoor = [targetX, targetY];
+            //Returns the input coordinate
+            return targetCoor;
+        } else {
+            window.alert("Invalid input. Please re-enter coordinate.");
+            return [0, 0];
+        }
     } else {
-        // undefined
-        console.log('No such document.')
+        window.alert("Invalid input. Please re-enter coordinate.");
+        return [0, 0];
     }
-}).catch(function(error) {
-    console.log('Error getting document: ', error);
-});
+
+}
+
+//Indicates if a targeted coordinate is a hit or a miss
+function hit(arr) {
+    let hitLocation = getTarget();
+    if (hitLocation[0] != 0) {
+        let cellId = document.getElementById("" + 0 + hitLocation[0] + hitLocation[1]);
+        //Cell turns red if ship is hit
+        if (arr[hitLocation[1]][hitLocation[0]] == 1) {
+
+            arr[hitLocation[1]][hitLocation[0]] = 0;
+            cellId.style.backgroundColor = "red";
+            window.alert("Hit!");
+        } else {
+            //Cell turns blue or remains red if ship is missed
+            if (cellId.style.backgroundColor == "red") {
+                window.alert("Miss. You have already targeted this coordinate!");
+            } else {
+                cellId.style.backgroundColor = "blue";
+                window.alert("Miss!");
+            }
+        }
+        //Computer opponent returns fire
+        compHit(userArr);
+    }
+}
+
+//Generates random target coordinates for computer opponent
+function rndCoor() {
+    let rndX = Math.floor((Math.random() * 11) + 1);
+    let rndY = Math.floor((Math.random() * 9) + 1);
+
+    let rndArr = [rndX, rndY];
+    return rndArr;
+}
+
+//Indicates if a targeted coordinate is a hit or a miss for the users board
+function compHit(arr) {
+    let hitLocation = rndCoor();
+    let cellId = document.getElementById("" + hitLocation[0] + hitLocation[1]);
+    //Cell turns red if user ship is hit
+    if (arr[hitLocation[1]][hitLocation[0]] == 1) {
+        arr[hitLocation[1]][hitLocation[0]] = 0;
+        cellId.style.backgroundColor = "red";
+        window.alert("Your opponent got a hit. Your turn!");
+    } else {
+        //Cell turns blue or remains red if user ship is missed
+        if (cellId.style.backgroundColor == "red") {
+            window.alert("Your opponent missed. Your turn!");
+        } else {
+            cellId.style.backgroundColor = "blue";
+            window.alert("Your opponent missed. Your turn!");
+        }
+    }
+}
+
+//Executes relative functions when the buttons are clicked 
+fireBtn.onclick = userFire;
+placeBtn.onclick = setBoard;
