@@ -83,6 +83,10 @@ function Ship(size, location) {
 function gridCreate(arr, type) {
     let body = document.getElementsByTagName('body')[0];
     let tbl = document.createElement('table');
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     tbl.setAttribute('border', '1');
     let tbdy = document.createElement('tbody');
 
@@ -94,6 +98,18 @@ function gridCreate(arr, type) {
         for (let j = 0; j < T_WIDTH; j++) {
             let td = document.createElement('td');
 
+<<<<<<< Updated upstream
+=======
+            //Label Grids
+            if (i == 0 && j == 0) {
+                if (type == 0) {
+                    td.innerHTML = "Player Grid";
+                } else {
+                    td.innerHTML = "Enemy Grid";
+                }
+
+            }
+>>>>>>> Stashed changes
             //Vertical labels
             if (i == 0 && !(j == 0)) {
 
@@ -155,6 +171,7 @@ function setBoard() {
     let coor3A = placeText3A.value;
     let coor3B = placeText3B.value
 
+<<<<<<< Updated upstream
     //Create 5 unit ship
     ship5 = createShip(coor5, SIZE5);
     //Create 4 unit ships
@@ -187,6 +204,54 @@ function setBoard() {
             //Hide startup stuff
             hideStartup();
             showPlay();
+=======
+    if (coor5.length == 5 || coor4A.length == 5 || coor4B.length == 5 ||
+        coor3A.length == 5 || coor3B.length == 5) {
+        //Create 5 unit ship
+        ship5 = createShip(coor5, SIZE5, 0);
+        //Create 4 unit ships
+        ship4A = createShip(coor4A, SIZE4, 1);
+        ship4B = createShip(coor4B, SIZE4, 2);
+        //Create 3 unit ships
+        ship3A = createShip(coor3A, SIZE3, 3);
+        ship3B = createShip(coor3B, SIZE3, 4);
+
+        //Check for valid ship sizes, if valid start game
+        if (ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() &&
+            ship3A.isCorrectSize() && ship3B.isCorrectSize()) {
+            //check if any ships are overlapped
+            if (!overlap()) {
+
+                //Array of ships
+                let ships = [ship5, ship4A, ship4B, ship3A, ship3B];
+
+                //Generate 2D array representing user ship placement
+                //Generate grid with ships placed
+                userArr = createPositionArr(ships)
+                gridCreate(userArr, 0);
+
+                //Generate 2D array representing computer opponent ship placement
+                //Generate computer opponent grid
+                computerArr = createPositionArr(loadOpponentShips());
+                console.log(computerArr);
+                gridCreate(computerArr, 1);
+
+                //Load ships into active ships array
+                activeCompShips = [compShip5, compShip4A, compShip4B, compShip3A, compShip3B];
+                activeUserShips = [ship5, ship4A, ship4B, ship3A, ship3B];
+
+                console.log(activeUserShips);
+                console.log(activeCompShips);
+                //Hide startup stuff
+                hideStartup();
+
+                //Show fire button
+                showPlay();
+            } else {
+                window.alert("One or more ships are overlapping. Please re-enter coordinates.")
+            }
+
+>>>>>>> Stashed changes
         } else {
             window.alert("One or more ships are overlapping. Please re-enter coordinates.")
         }
@@ -527,6 +592,82 @@ function compHit(arr) {
     }
 }
 
+<<<<<<< Updated upstream
+=======
+//Checks if ship is sunk, returns true if sunk
+function isSunk(aShip, arr) {
+    sunk = true;
+    let coorArr = [];
+    let xArr = [];
+    let yArr = [];
+    if (isVertical(aShip)) {
+        let x = aShip.location[0];
+        //Generate arrays of y coordinates
+        for (let i = Math.min(aShip.location[1], aShip.location[3]); i <= Math.max(aShip.location[1], aShip.location[3]); i++) {
+            yArr.push(i);
+        }
+        //check for if boat has remaning lives (1s)
+        for (let j = 0; j < yArr.length; j++) {
+            if (arr[yArr[j]][x] == 1) {
+                sunk = false;
+                break;
+            }
+        }
+        //Horizontal ship
+    } else {
+        let y = aShip.location[1];
+        //Generate arrays of x coordinates
+        for (let i = Math.min(aShip.location[0], aShip.location[2]); i <= Math.max(aShip.location[0], aShip.location[2]); i++) {
+            xArr.push(i);
+        }
+        //check for if boat has remaning lives (1s)
+        for (let j = 0; j < xArr.length; j++) {
+            if (arr[y][xArr[j]] == 1) {
+                sunk = false;
+                break;
+            }
+        }
+    }
+    return sunk;
+}
+
+//Determines if the game is over, either user or computer sunk 5 ships
+function gameOver() {
+    if (compShipsSunk == 5) {
+        //User wins
+        window.alert("GAME OVER. YOU WIN!");
+        location.reload();
+    } else if (userShipsSunk == 5) {
+        //User loses
+        window.alert("GAME OVER. YOU LOSE!");
+        location.reload();
+    }
+
+}
+
+//Checks if any user ships are sunk, if sunk deletes from active ships 
+function checkUserSunk() {
+    activeUserShips.forEach(function (curr) {
+        //If ship is sunk delete from active ships
+        if (curr != undefined && isSunk(curr, userArr)) {
+            delete activeUserShips[curr.index];
+            userShipsSunk++;
+        }
+    })
+}
+
+//Checks if any computer opponent ships are sunk, if sunk deletes from active ships 
+function checkCompSunk() {
+    activeCompShips.forEach(function (curr) {
+        //If ship is sunk delete from active ships
+        if (curr != undefined && isSunk(curr, computerArr)) {
+            delete activeCompShips[curr.index];
+            compShipsSunk++;
+        }
+    })
+}
+
+>>>>>>> Stashed changes
 //Executes relative functions when the buttons are clicked 
 fireBtn.onclick = userFire;
 placeBtn.onclick = setBoard;
