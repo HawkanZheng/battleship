@@ -70,3 +70,9 @@ td {
     text-align: center;
 }
 
+table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    color: whitesmoke;
+}
