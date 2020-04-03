@@ -520,8 +520,8 @@ function hit(arr) {
             //Checks if game is over
             gameOver();
         } else {
-            //Cell turns blue or remains red if ship is missed
-            if (cellId.style.backgroundColor == "red") {
+            //Cell turns blue or remains red or blue if ship is missed
+            if (cellId.style.backgroundColor == "red" || cellId.style.backgroundColor == "blue") {
                 window.alert("Miss. You have already targeted this coordinate!");
             } else {
                 cellId.style.backgroundColor = "blue";
