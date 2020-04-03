@@ -30,8 +30,8 @@ function createUser() {
 
     auth.createUserWithEmailAndPassword(email, password).then(function () {
 
-        // Send them to the landing page.
-        location.replace('game.html');
+        // Send them to landing page
+        location.replace('landingPage.html');
 
     }).catch(function (error) {
         // Handle Errors here.

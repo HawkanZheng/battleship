@@ -11,7 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-firestore.js"></script>
-
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
@@ -19,22 +19,26 @@
     <!--  HTML Section -->
     <!----------------------->
 
+    <div class="center">
     <h1>Welcome to Battle Ship</h1>
-    <div>
-        <input type="email" id="userName" placeholder="email">
+    <p> <span>*</span>New Members: <i>Please enter a username and password to sign up</i></p>
+    <div class="firebase.ui-auth-container">
+        <input type="email" id="userName" placeholder="email" class="container" id="firebase.ui-auth-container">
     </br>
-        <input type="password" id="password" placeholder="password">
+        <input type="password" id="password" placeholder="password" class="container" id="firebase.ui-auth-container">
     </br>
-        <button onclick="createUser()">SignUp</button>
-        <button onclick="login()">Login</button>
+        <button onclick="createUser()" class="login_btn">SignUp</button>
+        <button onclick="login()" class="login_btn">Login</button>
     </div>
-
+    </div>
+  
     <!--------------------------------------------------------------------->
     <!-- JS files: Your own JavaScript functions included here    -->
     <!--------------------------------------------------------------------->
+    <script src="firestore.js"></script>
     <script src="login.js"></script>
 
-    <!--------------------------------------------------------------------->
+    <!---------------------------------------------------------------------> 
     <!-- Make calls to your own JavaScript functions, here below-->
     <!---------------------------------------------------------------------->
 </body>
