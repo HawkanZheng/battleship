@@ -38,6 +38,9 @@ let placeBtn = document.getElementById("place");
 //Target coordinate input text and fire button
 let targetIn = document.getElementById("target");
 let fireBtn = document.getElementById("fire");
+//Sunk ships counter display
+let sunkUser = document.getElementById("userSunk");
+let sunkComp = document.getElementById("compSunk");
 
 //Array of string values for the columns
 let colArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
@@ -72,6 +75,14 @@ let compShipsSunk = 0;
 //Active ship arrays
 let activeUserShips;
 let activeCompShips;
+
+//Play music
+let music = document.getElementById("music");
+music.volume = "0.2";
+music.play();
+
+//Sunk explosion sfx
+let sunkSFX = document.getElementById("destroyed");
 
 //Constructor for ship object
 function Ship(size, location, index) {
@@ -487,10 +498,12 @@ function loadOpponentShips() {
 //Displays the firing input elements
 function showPlay() {
     let input = document.getElementsByClassName("guess");
-
     for (i = 0; i < input.length; i++) {
         input[i].style.display = "block";
     }
+    let sunk = document.getElementsByClassName("sunk");
+    sunk[0].style.display = "block";
+    sunk[1].style.display = "block";
 }
 
 //Starts the game
@@ -536,6 +549,8 @@ function hit(arr) {
             checkCompSunk();
             cellId.style.backgroundColor = "red";
             window.alert("Hit!");
+            //Update sunk counter
+            sunkComp.innerHTML = "Enemy ships sunk: " + compShipsSunk;
             //Checks if game is over
             gameOver();
         } else {
@@ -573,6 +588,8 @@ function compHit(arr) {
         checkUserSunk();
         cellId.style.backgroundColor = "red";
         window.alert("Your opponent got a hit. Your turn!");
+        //Update sunk counter
+        sunkUser.innerHTML = "Player ships sunk: " + userShipsSunk;
         //Checks if game is over
         gameOver();
     } else {
@@ -647,6 +664,8 @@ function checkUserSunk() {
         //If ship is sunk delete from active ships
         if (curr != undefined && isSunk(curr, userArr)) {
             delete activeUserShips[curr.index];
+            //play explosion
+            sunkSFX.play();
             userShipsSunk++;
         }
     });
@@ -658,6 +677,8 @@ function checkCompSunk() {
         //If ship is sunk delete from active ships
         if (curr != undefined && isSunk(curr, computerArr)) {
             delete activeCompShips[curr.index];
+            //play explosion
+            sunkSFX.play();
             compShipsSunk++;
         }
     });
