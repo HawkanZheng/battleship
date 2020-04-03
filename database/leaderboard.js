@@ -38,25 +38,33 @@ let boards = document.getElementById('leaderboards');
 function leaderboard() {
     let topTen = db.collection('Leaderboards').orderBy('wins', 'desc').limit(TOP_PLAYERS);
 
+    let i = 1;
+
     topTen.get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
             let players = doc.data();
 
+            let row = document.createElement('tr');
+
+            let header = document.createElement('th');
+
+            header.scope = 'row';
+            header.innerHTML = i;
+            i++;
+
             // Create the list item.
-            let item = document.createElement('ul');
+            let userName = document.createElement('td');
+            userName.innerHTML = players.email;
 
             // Create radio buttons
-            let display = document.createElement('text');
-
-            // Set id for button
-            display.id = players.uid;
-
-            // Give Leaderboard the values.
-            item.innerHTML = 'User: ' + players.email + '<br />' +
-                'Wins: ' + players.wins;
+            let score = document.createElement('td');
+            score.innerHTML = players.wins;
 
             // Add item to list.
-            boards.appendChild(item);
+            boards.appendChild(row);
+            boards.appendChild(header);
+            boards.appendChild(userName);
+            boards.appendChild(score);
         })
     });
 }
@@ -102,3 +110,4 @@ function addGame() {
         console.error('Error creating game: ', error);
     });
 }
+
