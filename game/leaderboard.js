@@ -1,7 +1,28 @@
+//--------------------------------------------------------------
+// Your web app's Firebase configuration
+//--------------------------------------------------------------
+let config = {
+    apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
+    authDomain: "battleship-bd087.firebaseapp.com",
+    databaseURL: "https://battleship-bd087.firebaseio.com",
+    projectId: "battleship-bd087",
+    storageBucket: "battleship-bd087.appspot.com",
+    messagingSenderId: "284023123174",
+    appId: "1:284023123174:web:6891c643a73cffa7765f27"
+};
+// Initialize Firebase
+firebase.initializeApp(config);
+
+// Get a reference to the database server.
+let db = firebase.firestore();
+let auth = firebase.auth();
+
 // Go to the game page.
 function playGame() {
     location.replace('game.html'); // Sent to game page.
 }
+
+// Get a reference to the database server.
 
 //------------------------------------------------------------
 // Welcome message 
@@ -40,37 +61,49 @@ function leaderboard() {
 
     let i = 1;
 
+    // Create a row element
+    let list = document.createElement('ol');
+    list.setAttribute('list-style-type', 'none');
+
     topTen.get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
             let players = doc.data();
 
             console.log(players);
+            // Create a cell element.
+            let item = document.createElement('li');
 
-            // Create a row element
-            let row = document.createElement('tr');
+            // item.innerHTML = i + '. ' + players.email
+            // + '</br>' + 'Wins: ' + players.wins;
 
-            // Create a 
-            let header = document.createElement('th');
+            // Set the contents.
+            item.appendChild(document.createTextNode(players.email
+                + ', ' + 'Wins: ' + players.wins));
 
-            header.scope = 'row';
-            header.innerHTML = i;
-            i++;
+            // Add it to the list.
+            list.appendChild(item);
 
-            // The users email.
-            let userName = document.createElement('td');
-            userName.innerHTML = players.email;
+             // Gives each user a rank.
+             i++;
 
-            // Value of wins per user.
-            let score = document.createElement('td');
-            score.innerHTML = players.wins;
+            // // The users email.
+            // let userName = document.createElement('td');
+            // userName.innerHTML = players.email;
 
-            // Add item to list.
-            boards.appendChild(row);
-            boards.appendChild(header);
-            boards.appendChild(userName);
-            boards.appendChild(score);
+            // // Value of wins per user.
+            // let score = document.createElement('td');
+            // score.innerHTML = players.wins;
+
+            // // Add item to list.
+            // boards.appendChild(row);
+            // boards.appendChild(header);
+            // boards.appendChild(userName);
+            // boards.appendChild(score);
         })
     });
+    
+    // Append the list.
+    boards.appendChild(list);
 }
 
 leaderboard();

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship</title>
     <link rel="stylesheet" href="landingPage.css">
+    <link rel="stylesheet" href="leaderboard.css">
 
     <!----------------------------------------------->
     <!-- CSS: Bootstrap, Firebase, other API -->
@@ -36,17 +37,33 @@
                     phrase is <span> "You sunk my battleship!</span></li>
             </ul>
 
-            <div id="leaderboards" class="content-table">
-
-                </br>
-                <h1>leaderboards</h1>
-                </br>
-
+            <!-- <div class="card-header" id="headerGradient">
+                <h1 id="leaderboardTitle">Leaderboard</h1>
             </div>
-    </div>
+            <div id="leaderboards"></div> -->
 
+            <div class="content-table" id="leaderboard">
+                <div class="d-flex w-100 justify-content-center align-self-center">
+                    <div class="card text-center" id="outlineCard">
+                        <div class="card-header" id="headerGradient">
+                            <h1 id="leaderboardTitle">Leaderboard</h1>
+                        </div>
+                        <div class="cardBody">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <div id="leaderboards"></div>
+                                    </tr>
+                                </thead>
+                                <tbody id="leaderboardBody"></tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    </p>
+        </p>
     </div>
     <div id="play-btn">
         <ul id="opengames">
@@ -59,7 +76,6 @@
     <script src="leaderboard.js"></script>
     <script src="landingPage.js"></script>
     <script src="login.js"></script>
-    <script src="joingame.js"></script>
 </body>
 
 </html>
