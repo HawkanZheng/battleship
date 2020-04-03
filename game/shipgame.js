@@ -38,6 +38,9 @@ let placeBtn = document.getElementById("place");
 //Target coordinate input text and fire button
 let targetIn = document.getElementById("target");
 let fireBtn = document.getElementById("fire");
+//Sunk ships counter display
+let sunkUser = document.getElementById("userSunk");
+let sunkComp = document.getElementById("compSunk");
 
 //Array of string values for the columns
 let colArr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
@@ -487,10 +490,12 @@ function loadOpponentShips() {
 //Displays the firing input elements
 function showPlay() {
     let input = document.getElementsByClassName("guess");
-
     for (i = 0; i < input.length; i++) {
         input[i].style.display = "block";
     }
+    let sunk = document.getElementsByClassName("sunk");
+    sunk[0].style.display = "block";
+    sunk[1].style.display = "block";
 }
 
 //Starts the game
@@ -536,6 +541,8 @@ function hit(arr) {
             checkCompSunk();
             cellId.style.backgroundColor = "red";
             window.alert("Hit!");
+            sunkUser.innerHTML = "Player ships sunk: " + userShipsSunk;
+            sunkComp.innerHTML = "Enemy ships sunk: " + compShipsSunk;
             //Checks if game is over
             gameOver();
         } else {
