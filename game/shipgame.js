@@ -77,7 +77,12 @@ let activeUserShips;
 let activeCompShips;
 
 //Play music
-document.getElementById("music").play();
+let music = document.getElementById("music");
+music.volume = "0.2";
+music.play();
+
+//Sunk explosion sfx
+let sunkSFX = document.getElementById("destroyed");
 
 //Constructor for ship object
 function Ship(size, location, index) {
@@ -544,7 +549,7 @@ function hit(arr) {
             checkCompSunk();
             cellId.style.backgroundColor = "red";
             window.alert("Hit!");
-            sunkUser.innerHTML = "Player ships sunk: " + userShipsSunk;
+            //Update sunk counter
             sunkComp.innerHTML = "Enemy ships sunk: " + compShipsSunk;
             //Checks if game is over
             gameOver();
@@ -583,6 +588,8 @@ function compHit(arr) {
         checkUserSunk();
         cellId.style.backgroundColor = "red";
         window.alert("Your opponent got a hit. Your turn!");
+        //Update sunk counter
+        sunkUser.innerHTML = "Player ships sunk: " + userShipsSunk;
         //Checks if game is over
         gameOver();
     } else {
@@ -653,6 +660,8 @@ function checkUserSunk(){
         //If ship is sunk delete from active ships
         if(curr != undefined && isSunk(curr, userArr)){
             delete activeUserShips[curr.index];
+            //play explosion
+            sunkSFX.play();
             userShipsSunk++;
         }  
     });
@@ -664,6 +673,8 @@ function checkCompSunk(){
         //If ship is sunk delete from active ships
         if(curr != undefined && isSunk(curr, computerArr)){
             delete activeCompShips[curr.index];
+            //play explosion
+            sunkSFX.play();
             compShipsSunk++;
         }         
     });
