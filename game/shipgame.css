@@ -88,11 +88,10 @@ table {
 
 .fireBox {
     left: 50%;
-    top: 30%;
     width: 400px;
     margin-top: -125px;
     margin-left: -140px;
-    position: absolute;
+    position: relative;
 }
 
 .text {
