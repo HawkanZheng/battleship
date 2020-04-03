@@ -743,4 +743,4 @@ function addGame(outcome) {
     });
 }
 
-addGame(0);
+//addGame(0);

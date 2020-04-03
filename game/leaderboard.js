@@ -17,31 +17,13 @@ firebase.initializeApp(config);
 let db = firebase.firestore();
 let auth = firebase.auth();
 
-// Go to the game page.
+//------------------------------------------------------------
+// Play Game
+//------------------------------------------------------------
 function playGame() {
     location.replace('game.html'); // Sent to game page.
 }
 
-// Get a reference to the database server.
-
-//------------------------------------------------------------
-// Welcome message 
-//------------------------------------------------------------
-
-// Create a users reference.
-let ref = db.collection('Users');
-
-function welcome() {
-    let user = auth.currentUser;
-
-    ref.get().then(function(doc) {
-        console.log(doc.data());
-    })
-
-    let message = document.getElementById('welcome');
-
-    message.innerHTML = 'Welcome to Battle Ship ' + user.email;
-}
 
 //------------------------------------------------------------
 // Leaderboards
@@ -56,6 +38,7 @@ let leaders = db.collection('Leaderboards');
 // Get leaderboard element.
 let boards = document.getElementById('leaderboards');
 
+// Get up to 10 users and display on the leaderboards.
 function leaderboard() {
     let topTen = db.collection('Leaderboards').orderBy('wins', 'desc').limit(TOP_PLAYERS);
 
@@ -67,9 +50,9 @@ function leaderboard() {
 
     topTen.get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
+            // Access the user object and their data.
             let players = doc.data();
 
-            console.log(players);
             // Create a cell element.
             let item = document.createElement('li');
 
@@ -85,27 +68,13 @@ function leaderboard() {
 
              // Gives each user a rank.
              i++;
-
-            // // The users email.
-            // let userName = document.createElement('td');
-            // userName.innerHTML = players.email;
-
-            // // Value of wins per user.
-            // let score = document.createElement('td');
-            // score.innerHTML = players.wins;
-
-            // // Add item to list.
-            // boards.appendChild(row);
-            // boards.appendChild(header);
-            // boards.appendChild(userName);
-            // boards.appendChild(score);
         })
-    });
-    
-    // Append the list.
+    });  
+    // Append the list to DOM.
     boards.appendChild(list);
 }
 
+// Call the function.
 leaderboard();
 
 //------------------------------------------------------------
