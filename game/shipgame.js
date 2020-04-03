@@ -494,8 +494,36 @@ function hit(arr) {
                 window.alert("Miss!");
             }
         }
+        compHit(userArr);
     }
 }
+
+function rndCoor() {
+    let rndX = Math.floor((Math.random() * 11) + 1);
+    let rndY = Math.floor((Math.random() * 9) + 1);
+
+    let rndArr = [rndX, rndY];
+    return rndArr;
+}
+
+function compHit(arr) {
+    let hitLocation = rndCoor();
+    let cellId = document.getElementById("" + hitLocation[0] + hitLocation[1]);
+
+    if (arr[hitLocation[1]][hitLocation[0]] == 1) {
+        arr[hitLocation[1]][hitLocation[0]] = 0;
+        cellId.style.backgroundColor = "red";
+        window.alert("Your opponent got a hit. Your turn!");
+    } else {
+        if (cellId.style.backgroundColor == "red") {
+            window.alert("Your opponent missed. Your turn!");
+        } else {
+            cellId.style.backgroundColor = "blue";
+            window.alert("Your opponent missed. Your turn!");
+        }
+    }
+}
+
 
 fireBtn.onclick = userFire;
 placeBtn.onclick = setBoard;
