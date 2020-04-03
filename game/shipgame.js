@@ -47,8 +47,8 @@ let compShip3A;
 let compShip3B;
 
 //Sunk count
-let userSunkCount = 0;
-let enemySunkCount = 0;
+let userShipsSunk = 0;
+let compShipsSunk = 0;
 
 //Active ship arrays
 let activeUserShips;
@@ -166,8 +166,8 @@ function setBoard() {
     let coor3A = placeText3A.value;
     let coor3B = placeText3B.value
 
-    if (coor5.length < 5 || coor4A.length < 5 || coor4A.length < 5 ||
-        coor4B.length < 5 || coor3A.length < 5 || coor3B.length < 5) {
+    if (coor5.length == 5 || coor4A.length ==  5 || coor4B.length ==  5 
+        || coor3A.length ==  5 || coor3B.length ==  5) {
         //Create 5 unit ship
         ship5 = createShip(coor5, SIZE5, 0);
         //Create 4 unit ships
@@ -201,8 +201,13 @@ function setBoard() {
                 activeCompShips = [compShip5, compShip4A, compShip4B, compShip3A, compShip3B];
                 activeUserShips = [ship5, ship4A, ship4B, ship3A, ship3B];
 
+                console.log(activeUserShips);
+                console.log(activeCompShips);
                 //Hide startup stuff
                 hideStartup();
+
+                //Show fire button
+                showPlay();
             } else {
                 window.alert("One or more ships are overlapping. Please re-enter coordinates.")
             }
@@ -210,6 +215,8 @@ function setBoard() {
         } else {
             window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
         }
+    } else {
+        window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
     }
 
 }
@@ -444,7 +451,7 @@ function loadOpponentShips() {
     }
     compArr.push(compShip4B);
     //Generate 5 unit ship
-    let compShip5 = randomShipGenerator(SIZE5, 0);
+    compShip5 = randomShipGenerator(SIZE5, 0);
     //Generate new ship until not overlapping
     while (compareCoor(compShip5, compArr)) {
         compShip5 = randomShipGenerator(SIZE5, 0);
@@ -499,8 +506,14 @@ function hit(arr) {
         if (arr[hitLocation[1]][hitLocation[0]] == 1) {
 
             arr[hitLocation[1]][hitLocation[0]] = 0;
+
+            //Check if any computer ships were sunk, if sunk ship is removed from active list
+            //and computer sunk ship count is incremented
+            checkCompSunk();
             cellId.style.backgroundColor = "red";
             window.alert("Hit!");
+            //Checks if game is over
+            gameOver();
         } else {
             //Cell turns blue or remains red if ship is missed
             if (cellId.style.backgroundColor == "red") {
@@ -531,8 +544,13 @@ function compHit(arr) {
     //Cell turns red if user ship is hit
     if (arr[hitLocation[1]][hitLocation[0]] == 1) {
         arr[hitLocation[1]][hitLocation[0]] = 0;
+        //Check if any user ships were sunk, if sunk ship is removed from active list
+        //and user sunk ship count is incremented
+        checkUserSunk();
         cellId.style.backgroundColor = "red";
         window.alert("Your opponent got a hit. Your turn!");
+        //Checks if game is over
+        gameOver();
     } else {
         //Cell turns blue or remains red if user ship is missed
         if (cellId.style.backgroundColor == "red") {
@@ -558,8 +576,9 @@ function isSunk(aShip, arr) {
         }
         //check for if boat has remaning lives (1s)
         for (let j = 0; j < yArr.length; j++) {
-            if (arr[x][yArr[j]] == 1) {
+            if (arr[yArr[j]][x] == 1) {
                 sunk = false;
+                break;
             }
         }
         //Horizontal ship
@@ -570,13 +589,50 @@ function isSunk(aShip, arr) {
             xArr.push(i);
         }
         //check for if boat has remaning lives (1s)
-        for (let j = 0; j < yArr.length; j++) {
-            if (arr[xArr[i]][y] == 1) {
+        for (let j = 0; j < xArr.length; j++) {
+            if (arr[y][xArr[j]] == 1) {
                 sunk = false;
+                break;
             }
         }
     }
     return sunk;
+}
+
+//Determines if the game is over, either user or computer sunk 5 ships
+function gameOver(){
+    if(compShipsSunk == 5){
+        //User wins
+        window.alert("GAME OVER. YOU WIN!");
+        location.reload();
+    } else if (userShipsSunk == 5){
+        //User loses
+        window.alert("GAME OVER. YOU LOSE!");
+        location.reload();
+    }
+
+}
+
+//Checks if any user ships are sunk, if sunk deletes from active ships 
+function checkUserSunk(){
+    activeUserShips.forEach(function(curr){
+        //If ship is sunk delete from active ships
+        if(curr != undefined && isSunk(curr, userArr)){
+            delete activeUserShips[curr.index];
+            userShipsSunk++;
+        }  
+    })
+}
+
+//Checks if any computer opponent ships are sunk, if sunk deletes from active ships 
+function checkCompSunk(){
+    activeCompShips.forEach(function(curr){
+        //If ship is sunk delete from active ships
+        if(curr != undefined && isSunk(curr, computerArr)){
+            delete activeCompShips[curr.index];
+            compShipsSunk++;
+        }         
+    })
 }
 
 //Executes relative functions when the buttons are clicked 
