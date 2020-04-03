@@ -46,8 +46,16 @@ let compShip4B;
 let compShip3A;
 let compShip3B;
 
+//Sunk count
+let userSunkCount = 0;
+let enemySunkCount = 0;
+
+//Active ship arrays
+let activeUserShips;
+let activeCompShips;
+
 //Constructor for ship object
-function Ship(size, location) {
+function Ship(size, location, index) {
 
     //Ship size, how many spaces it spans
     this.size = size;
@@ -58,6 +66,9 @@ function Ship(size, location) {
 
     //Boolean that determines if ship is sunk or not
     this.sunk = false;
+
+    //Index of position in active ships
+    this.index = index;
 
     //Returns true is boat is correct size
     this.isCorrectSize = function () {
@@ -129,8 +140,8 @@ function gridCreate(arr, type) {
     body.appendChild(tbl)
 }
 
-//Create a ship
-function createShip(coor, size) {
+//Create a ship with specific size and active ships index
+function createShip(coor, size, index) {
     //Get coordinates ship
     let shipX1 = getXCoor(coor, 0);
     let shipY1 = getYCoor(coor, 1);
@@ -138,7 +149,7 @@ function createShip(coor, size) {
     let shipY2 = getYCoor(coor, 4);
     let location = [shipX1, shipY1, shipX2, shipY2];
     //Create ship
-    return new Ship(size, location);
+    return new Ship(size, location, index);
 
 }
 
@@ -158,13 +169,13 @@ function setBoard() {
     if (coor5.length < 5 || coor4A.length < 5 || coor4A.length < 5 ||
         coor4B.length < 5 || coor3A.length < 5 || coor3B.length < 5) {
         //Create 5 unit ship
-        ship5 = createShip(coor5, SIZE5);
+        ship5 = createShip(coor5, SIZE5, 0);
         //Create 4 unit ships
-        ship4A = createShip(coor4A, SIZE4);
-        ship4B = createShip(coor4B, SIZE4);
+        ship4A = createShip(coor4A, SIZE4, 1);
+        ship4B = createShip(coor4B, SIZE4, 2);
         //Create 3 unit ships
-        ship3A = createShip(coor3A, SIZE3);
-        ship3B = createShip(coor3B, SIZE3);
+        ship3A = createShip(coor3A, SIZE3, 3);
+        ship3B = createShip(coor3B, SIZE3, 4);
 
         //Check for valid ship sizes, if valid start game
         if (ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() &&
@@ -185,6 +196,10 @@ function setBoard() {
                 computerArr = createPositionArr(loadOpponentShips());
                 console.log(computerArr);
                 gridCreate(computerArr, 1);
+
+                //Load ships into active ships array
+                activeCompShips = [compShip5, compShip4A, compShip4B, compShip3A, compShip3B];
+                activeUserShips = [ship5, ship4A, ship4B, ship3A, ship3B];
 
                 //Hide startup stuff
                 hideStartup();
@@ -356,8 +371,8 @@ function compareCoor(aShip, shipArr) {
     return overlapping;
 }
 
-//Generate random ship object of specified size
-function randomShipGenerator(size) {
+//Generate random ship object of specified size and active ships index
+function randomShipGenerator(size, index) {
     //Location coordinate array. [startX, startY, endX, endY]
     let locArr = [0, 0, 0, 0];
     //Determine if ship is vertical or horizontal, 0 for vertical, 1 for horizontal
@@ -397,7 +412,7 @@ function randomShipGenerator(size) {
         locArr[2] = endX;
     }
     //Create Ship with Location array of start and end coordinates, [Start X, Start Y, End X, End Y]
-    return new Ship(size, locArr);
+    return new Ship(size, locArr, index);
 }
 
 //Generate all computer opponent ships
@@ -405,34 +420,34 @@ function loadOpponentShips() {
     //comparison array
     let compArr = [];
     //Generate 3 unit ship
-    compShip3A = randomShipGenerator(SIZE3);
+    compShip3A = randomShipGenerator(SIZE3, 3);
     compArr.push(compShip3A);
     //Generate 3 unit ship
-    compShip3B = randomShipGenerator(SIZE3);
+    compShip3B = randomShipGenerator(SIZE3, 4);
     //Generate new ship until not overlapping
     while (compareCoor(compShip3B, compArr)) {
-        compShip3B = randomShipGenerator(SIZE3);
+        compShip3B = randomShipGenerator(SIZE3, 4);
     }
     compArr.push(compShip3B);
     //Generate 4 unit ship
-    compShip4A = randomShipGenerator(SIZE4);
+    compShip4A = randomShipGenerator(SIZE4, 1);
     //Generate new ship until not overlapping
     while (compareCoor(compShip4A, compArr)) {
-        compShip4A = randomShipGenerator(SIZE3);
+        compShip4A = randomShipGenerator(SIZE4, 1);
     }
     compArr.push(compShip4A);
     //Generate 4 unit ship
-    compShip4B = randomShipGenerator(SIZE4);
+    compShip4B = randomShipGenerator(SIZE4, 2);
     //Generate new ship until not overlapping
     while (compareCoor(compShip4B, compArr)) {
-        compShip4B = randomShipGenerator(SIZE4);
+        compShip4B = randomShipGenerator(SIZE4, 2);
     }
     compArr.push(compShip4B);
     //Generate 5 unit ship
-    let compShip5 = randomShipGenerator(SIZE5);
+    let compShip5 = randomShipGenerator(SIZE5, 0);
     //Generate new ship until not overlapping
     while (compareCoor(compShip5, compArr)) {
-        compShip5 = randomShipGenerator(SIZE5);
+        compShip5 = randomShipGenerator(SIZE5, 0);
     }
     compArr.push(compShip5);
     return compArr;
