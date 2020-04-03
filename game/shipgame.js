@@ -626,7 +626,7 @@ function checkUserSunk(){
             delete activeUserShips[curr.index];
             userShipsSunk++;
         }  
-    })
+    });
 }
 
 //Checks if any computer opponent ships are sunk, if sunk deletes from active ships 
@@ -637,7 +637,7 @@ function checkCompSunk(){
             delete activeCompShips[curr.index];
             compShipsSunk++;
         }         
-    })
+    });
 }
 
 //Executes relative functions when the buttons are clicked 
