@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BattleShip</title>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-firestore.js"></script>
+</head>
+<link rel="stylesheet" type="text/css" href="shipgame.css">
+
+<body>
+
+    <div>
+        <img src="images/grid.JPG" id="grid"></br>
+        <h1 id="enterInstruct">Please enter your ships coordinates. Ex. A1-A5</h1></br>
+        <input type="text" id="setup1" placeholder="Enter Coordinates">
+        <input type="text" id="setup2" placeholder="Enter Coordinates">
+        <input type="text" id="setup3" placeholder="Enter Coordinates">
+        <input type="text" id="setup4" placeholder="Enter Coordinates">
+        <input type="text" id="setup5" placeholder="Enter Coordinates">
+        <input type="button" id="place" value="Place">
+    </div>
+
+    <div>
+        <button onclick="logout()">Logout</button>
+    </br>
+    </br>
+    </div>
+    <div>
+        <button onclick="createGame()">Create New Game</button>
+    </br>
+    </div>
+    <div>
+    </br>
+        <li id="opengames">
+            Currently no games
+        </li>
+    </br>
+        <button onclick="joinGame()">Join the Game</button>
+    </br>
+    </div>
+    <script src="login.js"></script>
+    <script src="shipgame.js"></script>
+    <script src="joingame.js"></script>
+</body>
+
+</html>
