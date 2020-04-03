@@ -22,7 +22,6 @@ function welcome() {
     message.innerHTML = 'Welcome to Battle Ship ' + user.email;
 }
 
-
 //------------------------------------------------------------
 // Leaderboards
 //------------------------------------------------------------

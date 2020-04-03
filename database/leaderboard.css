@@ -1,0 +1,20 @@
+
+  .content-table {
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    background-color: aquamarine;
+  }
+  
+  .fancy {
+    background-color: bisque;
+    background-repeat: repeat-x;
+  }
+
+  .button {
+      text-align: center;
+  }
