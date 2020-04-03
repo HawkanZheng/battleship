@@ -517,7 +517,7 @@ function hit(arr) {
         } else {
             //Cell turns blue or remains red if ship is missed
             if (cellId.style.backgroundColor == "red") {
-                window.alert("Miss!");
+                window.alert("Miss. You have already targeted this coordinate!");
             } else {
                 cellId.style.backgroundColor = "blue";
                 window.alert("Miss!");
