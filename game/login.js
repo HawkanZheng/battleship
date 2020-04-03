@@ -17,6 +17,9 @@ firebase.initializeApp(config);
 let db = firebase.firestore();
 let auth = firebase.auth();
 
+// Get a reference for users.
+let ref = db.collection('Users');
+
 //------------------------------------------------------
 // SignUp
 //------------------------------------------------------ 
@@ -38,10 +41,29 @@ function createUser() {
         if (password.length < 6) {
             window.alert('Password needs to be at least 6 characters.');
         }
-        window.alert('That is Invalid');
         var errorCode = error.code;
         var errorMessage = error.message;
         // ...
+    });
+
+    // Grab the users uid.
+    user = auth.currentUser;
+
+    // Create a time stamp for the game.
+    let date = new Date();
+    let timestamp = date.getTime();
+
+    // Push the default info into database.
+    ref.doc(user.uid).update({
+        'Account Made': timestamp,
+        'wins': 0, // will be the up-to-date wins
+        'losses': 0 // will be the up-to-date losses
+    }).then(function () {
+        console.log('Information Trnasfer Complete!');
+
+        // log an error in the console.
+    }).catch(function (error) {
+        console.error('Error creating game: ', error);
     });
 }
 
@@ -91,55 +113,55 @@ function logout() {
 let user = firebase.auth().currentUser;
 let email, curentGame;
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-    // User is signed in.
-    console.log('logged in');
+        // User is signed in.
+        console.log('logged in');
 
-    // user information 
-    userEmail = user.email;
-    uid = user.uid;
+        // user information 
+        userEmail = user.email;
+        uid = user.uid;
 
-    // Add the user info to the database.
-    db.collection('Users').doc(uid).set({
-        // CurrGameId: currentGame,
-        email: userEmail,
-        UID: uid
-    }).then(function() {
-        console.log('Doc successfully written!');
-    }).catch(function(error) {
-        console.error('Error writing document: ', error);
-    })
+        // Add the user info to the database.
+        db.collection('Users').doc(uid).set({
+            // CurrGameId: currentGame,
+            email: userEmail,
+            UID: uid
+        }).then(function () {
+            console.log('Doc successfully written!');
+        }).catch(function (error) {
+            console.error('Error writing document: ', error);
+        })
 
     } else {
-      // No user is signed in.
-      console.log('not logged in');
+        // No user is signed in.
+        console.log('not logged in');
     }
-  });
+});
 
 //------------------------------------------------------
 // Login Anonymous (OPTIONAL)
 //------------------------------------------------------ 
 
 // Allow user to sign in as guest.
-firebase.auth().signInAnonymously().catch(function(error) {
+firebase.auth().signInAnonymously().catch(function (error) {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
     // ...
-  });
+});
 
-  let anon;
+let anon;
 
-  // Get Guest user data 
-  firebase.auth().onAuthStateChanged(function(user) {
+// Get Guest user data 
+firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      // User is signed in.
-      anon = user.isAnonymous;
-      uid = user.uid;
-      // ...
+        // User is signed in.
+        anon = user.isAnonymous;
+        uid = user.uid;
+        // ...
     } else {
-      // User is signed out.
-      console.log('No User logged in.')
+        // User is signed out.
+        console.log('No User logged in.')
     }
-  });
+});

@@ -1,6 +1,6 @@
-//--------------------------------------------------------------
-// Your web app's Firebase configuration
-//--------------------------------------------------------------
+// // --------------------------------------------------------------
+// // Your web app's Firebase configuration
+// // --------------------------------------------------------------
 // let config = {
 //     apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
 //     authDomain: "battleship-bd087.firebaseapp.com",
@@ -13,9 +13,9 @@
 // // Initialize Firebase
 // firebase.initializeApp(config);
 
-// Get a reference to the database server.
-//let db = firebase.firestore();
-//let auth = firebase.auth();
+// // // Get a reference to the database server.
+let db = firebase.firestore();
+// let auth = firebase.auth();
 
 //Table height and width
 const T_HEIGHT = 10;
@@ -113,7 +113,7 @@ function Ship(size, location, index) {
 function gridCreate(arr, type) {
     let body = document.getElementsByTagName('body')[0];
     let tbl = document.createElement('table');
-    
+
     tbl.setAttribute('border', '1');
     let tbdy = document.createElement('tbody');
 
@@ -126,13 +126,13 @@ function gridCreate(arr, type) {
             let td = document.createElement('td');
 
             //Label Grids
-            if(i == 0 && j == 0){
-                if (type == 0){
+            if (i == 0 && j == 0) {
+                if (type == 0) {
                     td.innerHTML = "Player Grid";
-                } else{
+                } else {
                     td.innerHTML = "Enemy Grid";
                 }
-                
+
             }
             //Vertical labels
             if (i == 0 && !(j == 0)) {
@@ -190,8 +190,8 @@ function setBoard() {
     let coor3A = placeText3A.value;
     let coor3B = placeText3B.value
 
-    if (coor5.length == 5 || coor4A.length ==  5 || coor4B.length ==  5 
-        || coor3A.length ==  5 || coor3B.length ==  5) {
+    if (coor5.length == 5 || coor4A.length == 5 || coor4B.length == 5 ||
+        coor3A.length == 5 || coor3B.length == 5) {
         //Create 5 unit ship
         ship5 = createShip(coor5, SIZE5, 0);
         //Create 4 unit ships
@@ -624,13 +624,17 @@ function isSunk(aShip, arr) {
 }
 
 //Determines if the game is over, either user or computer sunk 5 ships
-function gameOver(){
-    if(compShipsSunk == 5){
+function gameOver() {
+    if (compShipsSunk == 5) {
         //User wins
+
+        addGame(0); // Call function
         window.alert("GAME OVER. YOU WIN!");
         location.reload();
-    } else if (userShipsSunk == 5){
+    } else if (userShipsSunk == 5) {
         //User loses
+
+        addGame(1); // Call function
         window.alert("GAME OVER. YOU LOSE!");
         location.reload();
     }
@@ -638,27 +642,84 @@ function gameOver(){
 }
 
 //Checks if any user ships are sunk, if sunk deletes from active ships 
-function checkUserSunk(){
-    activeUserShips.forEach(function(curr){
+function checkUserSunk() {
+    activeUserShips.forEach(function (curr) {
         //If ship is sunk delete from active ships
-        if(curr != undefined && isSunk(curr, userArr)){
+        if (curr != undefined && isSunk(curr, userArr)) {
             delete activeUserShips[curr.index];
             userShipsSunk++;
-        }  
+        }
     });
 }
 
 //Checks if any computer opponent ships are sunk, if sunk deletes from active ships 
-function checkCompSunk(){
-    activeCompShips.forEach(function(curr){
+function checkCompSunk() {
+    activeCompShips.forEach(function (curr) {
         //If ship is sunk delete from active ships
-        if(curr != undefined && isSunk(curr, computerArr)){
+        if (curr != undefined && isSunk(curr, computerArr)) {
             delete activeCompShips[curr.index];
             compShipsSunk++;
-        }         
+        }
     });
 }
 
 //Executes relative functions when the buttons are clicked 
 fireBtn.onclick = userFire;
 placeBtn.onclick = setBoard;
+
+// Get a reference for users.
+let ref = db.collection('Users');
+
+//-----------------------------------------------------------
+// Database Functions.
+//-----------------------------------------------------------
+
+function addGame(outcome) {
+    // Grab the 'creators' information.
+    let user = firebase.auth().currentUser;
+
+    console.log(user);
+    // Get the wins and loss values from the user.
+
+    ref.get(user.uid).then(function (doc) {
+        console.log(doc.data());
+
+        // variables for wins and losses
+        let wins = doc.data().wins;
+        console.log(wins);
+        let losses = doc.data().losses;
+
+        // Create a time stamp for the game.
+        let date = new Date();
+        let timestamp = date.getTime();
+
+        // Create a game object.
+        let game = {
+            timestamp: timestamp,
+            wins: 0,
+            losses: 0
+        };
+
+        // Check if the user won or lost their game.
+        if (outcome == 0) {
+            wins++; // Increment wins
+        } else {
+            losses++; // Increment losses
+        }
+
+        // Push the game into the database.
+        ref.doc(id).update({
+            'Games.LastTimePlayed': game.timestamp,
+            'wins': wins, // will be the up-to-date wins
+            'losses': losses // will be the up-to-date losses
+        }).then(function () {
+            console.log('Game Complete!');
+
+            // log an error in the console.
+        }).catch(function (error) {
+            console.error('Error creating game: ', error);
+        });
+    });
+}
+
+addGame(0);
