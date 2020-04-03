@@ -6,6 +6,12 @@ body {
 #body {
     margin-top: 50px;
     text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+::placeholder{
+    font-family: 'Courier New', Courier, monospace;
 }
 
 button.player {
@@ -47,6 +53,7 @@ td {
     height: 30px;
     background-color: darkgoldenrod;
     color: black;
+    font-family: 'Courier New', Courier, monospace;
     border: none;
     cursor: pointer;
 }
@@ -82,23 +89,26 @@ table {
 .fireBox {
     left: 50%;
     top: 30%;
-    width: 300px;
+    width: 400px;
     margin-top: -125px;
-    margin-left: -150px;
+    margin-left: -140px;
     position: absolute;
 }
 
 .text {
     font-size: 20px;
-    margin-left: 50px;
+    margin-left: -5px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 #target {
-    width: 120px;
+    width: 150px;
     height: 30px;
     font-size: 15px;
     text-align: center;
-    margin-left: 85px;
+    margin-left: 70px;
 }
 
 #fire {
@@ -109,4 +119,14 @@ table {
     border: solid 1px black;
     border-radius: 10px;
     margin-left: 105px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.sunk{
+    display: none;
+    color: black;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-align: center;
 }

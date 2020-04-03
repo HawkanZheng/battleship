@@ -38,6 +38,7 @@ function createUser() {
         if (password.length < 6) {
             window.alert('Password needs to be at least 6 characters.');
         }
+        window.alert('That is Invalid');
         var errorCode = error.code;
         var errorMessage = error.message;
         // ...

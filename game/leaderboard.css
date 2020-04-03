@@ -1,0 +1,48 @@
+
+  .content-table {
+    margin: 100px ;
+    font-size: 0.1em;
+    max-width: 25vw;
+    border-radius: 5px;
+    text-align: center;
+    background-color:#669DB3FF;
+    margin-top: auto;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .button {
+      text-align: center;
+  }
+
+td,tr,th {
+    font-family: Sedgwick Ave Display;
+    color:black;
+    text-align: center;
+}
+
+#leaderboardTitle {
+    font-family: Sedgwick Ave Display;
+    font-size: large;
+    color: black;
+    text-align: center;
+    text-decoration-line: underline;
+}
+
+#leaderboardBody {
+    text-align: center;
+}
+
+#cardBody {
+    text-align: center;
+}
+
+#tableTitles {
+    text-align: center;
+}
+
+#leaderboards {
+    font-size: medium;
+    text-align: center;
+    list-style-type: none;
+}
