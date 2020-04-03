@@ -14,8 +14,8 @@ let config = {
 firebase.initializeApp(config);
 
 // Get a reference to the database server.
-let db = firebase.firestore();
-let auth = firebase.auth();
+//let db = firebase.firestore();
+//let auth = firebase.auth();
 
 //Table height and width
 const T_HEIGHT = 10;

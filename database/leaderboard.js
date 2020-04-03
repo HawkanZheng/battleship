@@ -44,19 +44,21 @@ function leaderboard() {
         snapshot.docs.forEach(doc => {
             let players = doc.data();
 
+            // Create a row element
             let row = document.createElement('tr');
 
+            // Create a 
             let header = document.createElement('th');
 
             header.scope = 'row';
             header.innerHTML = i;
             i++;
 
-            // Create the list item.
+            // The users email.
             let userName = document.createElement('td');
             userName.innerHTML = players.email;
 
-            // Create radio buttons
+            // Value of wins per user.
             let score = document.createElement('td');
             score.innerHTML = players.wins;
 
