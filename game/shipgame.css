@@ -1,11 +1,39 @@
-button.player{
+button.player {
     width: 30px;
     height: 30px;
 }
 
-td{
+td {
     width: 35px;
     height: 35px;
     text-align: center;
-    
+
+}
+
+.guess {
+    display: none;
+}
+
+#buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.legend {
+    border: none;
+    padding: 15px;
+    margin: 4px;
+}
+
+#greenBtn {
+    background-color: green;
+}
+
+#redBtn {
+    background-color: red;
+}
+
+#BlueBtn {
+    background-color: blue;
 }
