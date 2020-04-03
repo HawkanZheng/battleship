@@ -551,8 +551,7 @@ function hit(arr) {
             window.alert("Hit!");
             //Update sunk counter
             sunkComp.innerHTML = "Enemy ships sunk: " + compShipsSunk;
-            //Checks if game is over
-            gameOver();
+            
         } else {
             //Cell turns blue or remains red or blue if ship is missed
             if (cellId.style.backgroundColor == "red" || cellId.style.backgroundColor == "blue") {
@@ -562,15 +561,20 @@ function hit(arr) {
                 window.alert("Miss!");
             }
         }
-        //Computer opponent returns fire
-        compHit(userArr);
+        //Checks if game is over
+        if(!gameOver()){
+            //Computer opponent returns fire
+            compHit(userArr);
+        }
+        
+       
     }
 }
 
 //Generates random target coordinates for computer opponent
 function rndCoor() {
-    let rndX = Math.floor((Math.random() * 11) + 1);
-    let rndY = Math.floor((Math.random() * 9) + 1);
+    let rndX = Math.floor((Math.random() * (T_WIDTH - 1)) + 1);
+    let rndY = Math.floor((Math.random() * (T_HEIGHT - 1)) + 1);
 
     let rndArr = [rndX, rndY];
     return rndArr;
@@ -642,16 +646,19 @@ function isSunk(aShip, arr) {
 
 //Determines if the game is over, either user or computer sunk 5 ships
 function gameOver(){
+    let over = false;
     if(compShipsSunk == 5){
         //User wins
+        over = true;
         window.alert("GAME OVER. YOU WIN!");
-        location.reload();
+        location.replace("landingPage.html");
     } else if (userShipsSunk == 5){
         //User loses
+        over = true;
         window.alert("GAME OVER. YOU LOSE!");
-        location.reload();
+        location.replace("landingPage.html");
     }
-
+    return over;
 }
 
 //Checks if any user ships are sunk, if sunk deletes from active ships 

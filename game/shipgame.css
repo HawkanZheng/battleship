@@ -10,7 +10,7 @@ body {
     font-weight: bold;
 }
 
-::placeholder{
+::placeholder {
     font-family: 'Courier New', Courier, monospace;
 }
 
@@ -49,10 +49,12 @@ td {
 }
 
 #place {
-    width: 120px;
-    height: 30px;
+    width: 150px;
+    height: 50px;
     background-color: darkgoldenrod;
     color: black;
+    font-size: larger;
+    font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
     border: none;
     cursor: pointer;
@@ -121,11 +123,21 @@ table {
     font-family: 'Courier New', Courier, monospace;
 }
 
-.sunk{
+.sunk {
     display: none;
     color: black;
     font-size: 20px;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     text-align: center;
+}
+
+#positionBtn {
+    width: 200px;
+    height: 50px;
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
 }
