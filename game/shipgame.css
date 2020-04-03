@@ -10,6 +10,10 @@ body {
     font-weight: bold;
 }
 
+#grid{
+    width: 350px
+}
+
 ::placeholder {
     font-family: 'Courier New', Courier, monospace;
 }
@@ -62,6 +66,7 @@ td {
 
 #enterInstruct {
     color: whitesmoke;
+    font-size: larger;
 }
 
 #greenBtn {
@@ -86,6 +91,7 @@ table {
     margin-top: 50px;
     color: black;
     font-weight: bold;
+    width: ;
 }
 
 .fireBox {

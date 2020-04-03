@@ -78,7 +78,8 @@ let activeCompShips;
 
 //Play music
 let music = document.getElementById("music");
-music.volume = "0.5";
+music.volume = 0.5;
+music.loop = true;
 music.play();
 
 //Sunk explosion sfx
@@ -221,23 +222,22 @@ function setBoard() {
                 //Array of ships
                 let ships = [ship5, ship4A, ship4B, ship3A, ship3B];
 
-                //Generate 2D array representing user ship placement
-                //Generate grid with ships placed
-                userArr = createPositionArr(ships)
-                gridCreate(userArr, 0);
-
                 //Generate 2D array representing computer opponent ship placement
                 //Generate computer opponent grid
                 computerArr = createPositionArr(loadOpponentShips());
                 console.log(computerArr);
                 gridCreate(computerArr, 1);
 
+                //Generate 2D array representing user ship placement
+                //Generate grid with ships placed
+                userArr = createPositionArr(ships)
+                gridCreate(userArr, 0);
+
                 //Load ships into active ships array
                 activeCompShips = [compShip5, compShip4A, compShip4B, compShip3A, compShip3B];
                 activeUserShips = [ship5, ship4A, ship4B, ship3A, ship3B];
 
-                console.log(activeUserShips);
-                console.log(activeCompShips);
+
                 //Hide startup stuff
                 hideStartup();
 
