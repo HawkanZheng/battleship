@@ -149,43 +149,46 @@ function setBoard() {
     let coor3A = placeText3A.value;
     let coor3B = placeText3B.value
 
-    //Create 5 unit ship
-    ship5 = createShip(coor5, SIZE5);
-    //Create 4 unit ships
-    ship4A = createShip(coor4A, SIZE4);
-    ship4B = createShip(coor4B, SIZE4);
-    //Create 3 unit ships
-    ship3A = createShip(coor3A, SIZE3);
-    ship3B = createShip(coor3B, SIZE3);
+    if (coor5.length < 5 || coor4A.length < 5 || coor4A.length < 5 ||
+        coor4B.length < 5 || coor3A.length < 5 || coor3B.length < 5) {
+        //Create 5 unit ship
+        ship5 = createShip(coor5, SIZE5);
+        //Create 4 unit ships
+        ship4A = createShip(coor4A, SIZE4);
+        ship4B = createShip(coor4B, SIZE4);
+        //Create 3 unit ships
+        ship3A = createShip(coor3A, SIZE3);
+        ship3B = createShip(coor3B, SIZE3);
 
-    //Check for valid ship sizes, if valid start game
-    if (ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() &&
-        ship3A.isCorrectSize() && ship3B.isCorrectSize()) {
-        //check if any ships are overlapped
-        if (!overlap()) {
+        //Check for valid ship sizes, if valid start game
+        if (ship5.isCorrectSize() && ship4A.isCorrectSize() && ship4B.isCorrectSize() &&
+            ship3A.isCorrectSize() && ship3B.isCorrectSize()) {
+            //check if any ships are overlapped
+            if (!overlap()) {
 
-            //Array of ships
-            let ships = [ship5, ship4A, ship4B, ship3A, ship3B];
+                //Array of ships
+                let ships = [ship5, ship4A, ship4B, ship3A, ship3B];
 
-            //Generate 2D array representing user ship placement
-            //Generate grid with ships placed
-            userArr = createPositionArr(ships)
-            gridCreate(userArr, 0);
+                //Generate 2D array representing user ship placement
+                //Generate grid with ships placed
+                userArr = createPositionArr(ships)
+                gridCreate(userArr, 0);
 
-            //Generate 2D array representing computer opponent ship placement
-            //Generate computer opponent grid
-            computerArr = createPositionArr(loadOpponentShips());
-            console.log(computerArr);
-            gridCreate(computerArr, 1);
+                //Generate 2D array representing computer opponent ship placement
+                //Generate computer opponent grid
+                computerArr = createPositionArr(loadOpponentShips());
+                console.log(computerArr);
+                gridCreate(computerArr, 1);
 
-            //Hide startup stuff
-            hideStartup();
+                //Hide startup stuff
+                hideStartup();
+            } else {
+                window.alert("One or more ships are overlapping. Please re-enter coordinates.")
+            }
+
         } else {
-            window.alert("One or more ships are overlapping. Please re-enter coordinates.")
+            window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
         }
-
-    } else {
-        window.alert("Ship coordinates are invalid. Please re-enter coordinates.");
     }
 
 }
