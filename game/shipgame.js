@@ -458,7 +458,7 @@ function userFire() {
 //Gets the targeted coordinates
 function getTarget() {
     let targetValue = targetIn.value;
-    if (targetValue.length < 2) {
+    if (targetValue.length == 2) {
         let targetX = getXCoor(targetValue, 0);
         let targetY = getYCoor(targetValue, 1);
         if (targetX >= 1 && targetX <= 11 && targetY >= 1 && targetY <= 9) {
