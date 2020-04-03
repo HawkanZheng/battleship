@@ -186,7 +186,7 @@ function setBoard() {
 
             //Hide startup stuff
             hideStartup();
-            showFire();
+            showPlay();
         } else {
             window.alert("One or more ships are overlapping. Please re-enter coordinates.")
         }
@@ -437,7 +437,7 @@ function loadOpponentShips() {
 }
 
 //Displays the firing input elements
-function showFire() {
+function showPlay() {
     let input = document.getElementsByClassName("guess");
 
     for (i = 0; i < input.length; i++) {
@@ -446,48 +446,56 @@ function showFire() {
 }
 
 //Starts the game
-function playGame() {
-    if (turn) {
-        hit();
-        turn = false;
-    } else {
-        window.alert("Your opponent is playing, please wait for your turn!")
-    }
+function userFire() {
+    // if (turn) {
+    hit(computerArr);
+    //turn = false;
+    //} else {
+    //window.alert("Your opponent is playing, please wait for your turn!")
+    // }
 }
 
 //Gets the targeted coordinates
 function getTarget() {
     let targetValue = targetIn.value;
-
-    let targetX = getXCoor(targetValue, 0);
-    let targetY = getYCoor(targetValue, 1);
-    if (targetX >= 1 && targetX <= 11 && targetY >= 1 && targetY <= 9) {
-        let targetCoor = [targetX, targetY];
-        return targetCoor;
+    if (targetValue.length < 2) {
+        let targetX = getXCoor(targetValue, 0);
+        let targetY = getYCoor(targetValue, 1);
+        if (targetX >= 1 && targetX <= 11 && targetY >= 1 && targetY <= 9) {
+            let targetCoor = [targetX, targetY];
+            return targetCoor;
+        } else {
+            window.alert("Invalid input. Please re-enter coordinate.");
+            return [0, 0];
+        }
     } else {
         window.alert("Invalid input. Please re-enter coordinate.");
+        return [0, 0];
     }
+
 }
 
 //Indicates if a targeted coordinate is a hit or a miss
-function hit() {
+function hit(arr) {
     let hitLocation = getTarget();
-    let cellId = document.getElementById("" + 0 + hitLocation[0] + hitLocation[1]);
+    if (hitLocation[0] != 0) {
+        let cellId = document.getElementById("" + 0 + hitLocation[0] + hitLocation[1]);
 
-    if (arr[hitLocation[1]][hitLocation[0]] == 1) {
+        if (arr[hitLocation[1]][hitLocation[0]] == 1) {
 
-        arr[hitLocation[1]][hitLocation[0]] = 0;
-        cellId.style.backgroundColor = "red";
-        window.alert("Hit!");
-    } else {
-        if (cellId.style.backgroundColor == "red") {
-            window.alert("Miss!");
+            arr[hitLocation[1]][hitLocation[0]] = 0;
+            cellId.style.backgroundColor = "red";
+            window.alert("Hit!");
         } else {
-            cellId.style.backgroundColor = "blue";
-            window.alert("Miss!");
+            if (cellId.style.backgroundColor == "red") {
+                window.alert("Miss!");
+            } else {
+                cellId.style.backgroundColor = "blue";
+                window.alert("Miss!");
+            }
         }
     }
 }
 
-fireBtn.onclick = playGame;
+fireBtn.onclick = userFire;
 placeBtn.onclick = setBoard;
