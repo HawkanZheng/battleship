@@ -74,6 +74,18 @@ function login() {
     // Store the users information into the database.
 }
 
+// Welcome message 
+function welcome() {
+    let user = auth.currentUser;
+
+    if (user) {
+        // Display Welcome message.
+        console.log(doc.data());
+      } else {
+        // No user is signed in.
+      }
+}
+
 //------------------------------------------------------
 // Logout
 //------------------------------------------------------ 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-        <!----------------------------------------------->
+    <!----------------------------------------------->
     <!-- CSS: Bootstrap, Firebase, other API -->
     <!----------------------------------------------->
     <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
@@ -13,17 +13,27 @@
     <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-firestore.js"></script>
 </head>
 <body>
-    <h1>Click The Game you want to Join!</h1>
+    <div id="welcome">
+        <h1>Click The Game you want to Join!</h1>
+    </div>
     <div>
-        <ul id="opengames">
-            
-        </ul>
+
+    </div>
+    <div>
     </br>
-        <button onclick="createGame()">Create New Game</button>
+        <button onclick="playGame()">Play BattleShip!</button>
     </br>
     </div>
 
+    <div id="leaderboards">
+    </br>
+    <h1>Leaderboards</h1>
+    </br>
+    </div>
+
+
+
     <script src="login.js"></script>
-    <script src="joingame.js"></script>
+    <script src="leaderboard.js"></script>
 </body>
 </html>

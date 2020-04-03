@@ -368,41 +368,6 @@ function compareCoor(aShip, shipArr) {
 
 placeBtn.onclick = setBoard;
 
-//-----------------------------------------------------------------------
-// Send the Grid to the database. 
-//-----------------------------------------------------------------------
-
-
-// Get the values of the users board.
-let gridRef = db.collection('Games');
-
-// Send board to the database.
-function sendBoard() {
-    
-    // Get the current users UID.
-    let user = firebase.auth().currentUser;
-    uid = user.uid;
-
-    gridRef.collection(key).doc('Board').set({
-        // CurrGameId: currentGame,
-        board: userArr
-    }).then(function () {
-        console.log('Board successfully written!');
-    }).catch(function (error) {
-        console.error('Error sending board info: ', error);
-    });
-}
-
-gridRef.get().then(function(doc) {
-    if (doc.exists) {
-        console.log('Document data: ', doc.data());
-    } else {
-        // undefined
-        console.log('No such document.')
-    }
-}).catch(function(error) {
-    console.log('Error getting document: ', error);
-});
 //Generate random ship object of specified size
 function randomShipGenerator(size) {
     //Location coordinate array. [startX, startY, endX, endY]
@@ -484,3 +449,38 @@ function loadOpponentShips() {
     compArr.push(compShip5);
     return compArr;
 }
+
+//-----------------------------------------------------------------------
+// Send the Grid to the database. 
+//-----------------------------------------------------------------------
+
+// Get the values of the users board.
+let gridRef = db.collection('Games');
+
+// Send board to the database.
+function sendBoard() {
+    
+    // Get the current users UID.
+    let user = firebase.auth().currentUser;
+    uid = user.uid;
+
+    gridRef.collection(key).doc('Board').set({
+        // CurrGameId: currentGame,
+        board: userArr
+    }).then(function () {
+        console.log('Board successfully written!');
+    }).catch(function (error) {
+        console.error('Error sending board info: ', error);
+    });
+}
+
+gridRef.get().then(function(doc) {
+    if (doc.exists) {
+        console.log('Document data: ', doc.data());
+    } else {
+        // undefined
+        console.log('No such document.')
+    }
+}).catch(function(error) {
+    console.log('Error getting document: ', error);
+});

@@ -1,65 +1,65 @@
-//--------------------------------------------------------------
-// Create a new game.
-//--------------------------------------------------------------
+// //--------------------------------------------------------------
+// // Create a new game.
+// //--------------------------------------------------------------
 
-// boolean for creator.
-let create = false;
+// // boolean for creator.
+// let create = false;
 
-// reference to games in database.
-ref = db.collection('Games');
+// // reference to games in database.
+// ref = db.collection('Games');
 
-let STATE = {
-    OPEN: 1,
-    JOINED: 2
-};
+// let STATE = {
+//     OPEN: 1,
+//     JOINED: 2
+// };
 
-let game = {
-    'creator': {
-        'userName': 'Daichi Keber',
-        'uid': 'sadasd12312dsa'
-    },
-    'joiner': {
-        'userName': 'Steve Sidhu',
-        'uid': 'sadasd1e12e12'
-    },
-    'state': 2 // JOINED
-}
+// let game = {
+//     'creator': {
+//         'userName': 'Daichi Keber',
+//         'uid': 'sadasd12312dsa'
+//     },
+//     'joiner': {
+//         'userName': 'Steve Sidhu',
+//         'uid': 'sadasd1e12e12'
+//     },
+//     'state': 2 // JOINED
+// }
 
-// Create the game.
-function createGame() {
-    // Grab the 'creators' information.
-    let user = auth.currentUser;
+// // Create the game.
+// function createGame() {
+//     // Grab the 'creators' information.
+//     let user = auth.currentUser;
 
-    // Create a game object.
-    let currentGame = {
-        creator: {
-            uid: user.uid,
-            userName: user.email
-        },
-        joiner: {
-            uid: null,
-            userName: null
-        },
-        state: STATE.OPEN
-    };
+//     // Create a game object.
+//     let currentGame = {
+//         creator: {
+//             uid: user.uid,
+//             userName: user.email
+//         },
+//         joiner: {
+//             uid: null,
+//             userName: null
+//         },
+//         state: STATE.OPEN
+//     };
 
-    // Push the game into the database.
-    ref.doc('' + uid).set({
-        gameId: uid,
-        creator: currentGame.creator,
-        joiner: currentGame.joiner,
-        state: currentGame.state
-    }).then(function () {
-        console.log('Game created!');
-        // Joins game they created.
-        location.replace('game.html');
+//     // Push the game into the database.
+//     ref.doc('' + uid).set({
+//         gameId: uid,
+//         creator: currentGame.creator,
+//         joiner: currentGame.joiner,
+//         state: currentGame.state
+//     }).then(function () {
+//         console.log('Game created!');
+//         // Joins game they created.
+//         location.replace('game.html');
 
 
-    }).catch(function (error) {
-        console.error('Error creating game: ', error);
-    });
-    create = true;
-}
+//     }).catch(function (error) {
+//         console.error('Error creating game: ', error);
+//     });
+//     create = true;
+// }
 
 // getRoomStatus();
 
@@ -108,7 +108,7 @@ function createGame() {
 //gameFull();
 
 // Call display games.
-displayGames();
+// displayGames();
 
 // let stateRef = ref.doc(uid);
 
@@ -127,77 +127,77 @@ displayGames();
 //--------------------------------------------------------------
 // Display List of Games
 //--------------------------------------------------------------
-function displayGames() {
+// function displayGames() {
 
-    let games = document.getElementById('opengames');
+//     let games = document.getElementById('opengames');
 
-    // get the open games.
-    ref.get().then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-            let openGames = doc.data();
+//     // get the open games.
+//     ref.get().then((snapshot) => {
+//         snapshot.docs.forEach(doc => {
+//             let openGames = doc.data();
 
-            // Create the list item.
-            let item = document.createElement('ul');
+//             // Create the list item.
+//             let item = document.createElement('ul');
 
-            // Create radio buttons
-            let btn = document.createElement('button');
+//             // Create radio buttons
+//             let btn = document.createElement('button');
 
-            // Set id for button
-            btn.id = openGames.gameId;
+//             // Set id for button
+//             btn.id = openGames.gameId;
 
-            // Give buttons inner html value.
-            btn.innerHTML = 'Game Against ' + openGames.creator.userName;
+//             // Give buttons inner html value.
+//             btn.innerHTML = 'Game Against ' + openGames.creator.userName;
 
-            // Onclick event
-            btn.onclick = joinGame;
+//             // Onclick event
+//             btn.onclick = joinGame;
 
-            // Set it's content
-            item.appendChild(btn);
+//             // Set it's content
+//             item.appendChild(btn);
 
-            // Add item to list.
-            games.appendChild(item);
-        })
-    });
-}
+//             // Add item to list.
+//             games.appendChild(item);
+//         })
+//     });
+// }
 
 //--------------------------------------------------------------
 // Join a game.
 //--------------------------------------------------------------
-let gridRef = db.collection('Games');
+// let gridRef = db.collection('Games');
 
-// To determine if they are not the creator 
-function joinGame() {
+// // To determine if they are not the creator 
+// function joinGame() {
 
-    // Get current user info
-    let user = auth.currentUser;
+//     // Get current user info
+//     let user = auth.currentUser;
 
-    // To determine if they are not the creator 
-    if (user.uid != this.id) {
+//     // To determine if they are not the creator 
+//     if (user.uid != this.id) {
 
-        // Reference the game Id
-        let gameRef = ref.doc(this.id);
+//         // Reference the game Id
+//         let gameRef = ref.doc(this.id);
 
-        // The Game oject for the game being joined.
-        let joiner = {
-            joiner: {
-                uid: user.uid,
-                userName: user.email
-            },
-            state: STATE.JOINED
-        };
+//         // The Game oject for the game being joined.
+//         let joiner = {
+//             joiner: {
+//                 uid: user.uid,
+//                 userName: user.email
+//             },
+//             state: STATE.JOINED
+//         };
 
-        // Add the joiner into the game.
-        gameRef.update({
-            joiner: joiner.joiner,
-            state: joiner.state,
-        }).then(function () {
-            console.log('Joined Game!');
-            location.replace('game.html');
-        }).catch(function (error) {
-            console.error('Error joining game: ', error);
-        });
-    }
-}
+//         // Add the joiner into the game.
+//         gameRef.update({
+//             joiner: joiner.joiner,
+//             state: joiner.state,
+//         }).then(function () {
+//             console.log('Joined Game!');
+//             location.replace('game.html');
+//         }).catch(function (error) {
+//             console.error('Error joining game: ', error);
+//         });
+//     }
+// }
 
 // // // reference to games in database.
 // // ref = db.collection('Games');
