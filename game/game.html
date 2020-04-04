@@ -14,23 +14,29 @@
 <body>
     <div id="body">
         <img src="images/grid.JPG" id="grid" class="setup"></br>
-        <h1 id="enterInstruct" class="setup">Please enter your ships coordinates. Ex. A1-A5</h1></br>
+        
         <label for="setup1" class="setup label">5 unit ship:</label>
-        <input type="text" id="setup1" placeholder="Enter Coordinates" class="setup"></br>
+        <input type="text" id="setup1" placeholder="Enter Coordinates" class="setup" maxlength="5"></br>
         <label for="setup2" class="setup label">4 unit ship:</label>
-        <input type="text" id="setup2" placeholder="Enter Coordinates" class="setup"></br>
+        <input type="text" id="setup2" placeholder="Enter Coordinates" class="setup" maxlength="5"></br>
         <label for="setup3" class="setup label">4 unit ship:</label>
-        <input type="text" id="setup3" placeholder="Enter Coordinates" class="setup"></br>
+        <input type="text" id="setup3" placeholder="Enter Coordinates" class="setup" maxlength="5"></br>
         <label for="setup4" class="setup label">3 unit ship:</label>
-        <input type="text" id="setup4" placeholder="Enter Coordinates" class="setup"></br>
+        <input type="text" id="setup4" placeholder="Enter Coordinates" class="setup" maxlength="5"></br>
         <label for="setup5" class="setup label">3 unit ship:</label>
-        <input type="text" id="setup5" placeholder="Enter Coordinates" class="setup"></br>
+        <input type="text" id="setup5" placeholder="Enter Coordinates" class="setup" maxlength="5"></br>
         <br>
-        <input type="button" id="place" value="Place" class="setup">
+        <input type="button" id="place" value="Set Position" class="setup"></br>
+        <h1 id="enterInstruct" class="setup">Please enter your ship coordinates using the above table as reference.</br> 
+            Use the following syntax: [StartColumn][StartRow]-[EndColumn][EndRow]</br>
+            Example: A1-A5<br>
+            Ships must be placed horizontally or vertically.</br>
+            Ships must span accross their specified unit size.</br>
+            Ships cannot overlap.</h1></br>
     </div>
     <div class="fireBox">
         <label for="target" class="guess text">Enter target coordinate:</label>
-        <input type="text" id="target" placeholder="Enter coordinate" class="guess"></br>
+        <input type="text" id="target" placeholder="Enter coordinate" class="guess" maxlength="2"></br>
         <input type="button" id="fire" value="Fire" class="guess">
     </div>
     <div id="legend">
