@@ -1,3 +1,18 @@
+//--------------------------------------------------------------
+// Your web app's Firebase configuration
+//--------------------------------------------------------------
+let config = {
+    apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
+    authDomain: "battleship-bd087.firebaseapp.com",
+    databaseURL: "https://battleship-bd087.firebaseio.com",
+    projectId: "battleship-bd087",
+    storageBucket: "battleship-bd087.appspot.com",
+    messagingSenderId: "284023123174",
+    appId: "1:284023123174:web:6891c643a73cffa7765f27"
+};
+// Initialize Firebase
+firebase.initializeApp(config);
+
 // Get a reference to the database server.
 //let db = firebase.firestore();
 //let auth = firebase.auth();
@@ -229,7 +244,6 @@ function setBoard() {
                 //Show fire button
                 showPlay();
 
-                addGame(0);
             } else {
                 window.alert("One or more ships are overlapping. Please re-enter coordinates.")
             }
@@ -538,7 +552,7 @@ function hit(arr) {
             window.alert("Hit!");
             //Update sunk counter
             sunkComp.innerHTML = "Enemy ships sunk: " + compShipsSunk;
-            
+
         } else {
             //Cell turns blue or remains red or blue if ship is missed
             if (cellId.style.backgroundColor == "red" || cellId.style.backgroundColor == "blue") {
@@ -549,12 +563,12 @@ function hit(arr) {
             }
         }
         //Checks if game is over
-        if(!gameOver()){
+        if (!gameOver()) {
             //Computer opponent returns fire
             compHit(userArr);
         }
-        
-       
+
+
     }
 }
 
@@ -632,18 +646,20 @@ function isSunk(aShip, arr) {
 }
 
 //Determines if the game is over, either user or computer sunk 5 ships
-function gameOver(){
+function gameOver() {
     let over = false;
-    if(compShipsSunk == 5){
+    if (compShipsSunk == 5) {
         //User wins
         over = true;
         window.alert("GAME OVER. YOU WIN!");
         location.replace("landingPage.html");
-    } else if (userShipsSunk == 5){
+        addGame(0); // Call the add Game function
+    } else if (userShipsSunk == 5) {
         //User loses
         over = true;
         window.alert("GAME OVER. YOU LOSE!");
         location.replace("landingPage.html");
+        addGame(1); // Call the add Game function
     }
     return over;
 }
@@ -683,57 +699,57 @@ placeBtn.onclick = setBoard;
 //-----------------------------------------------------------
 
 function addGame(outcome) {
-    
-    // Grab the players information.
-    let user = firebase.auth().currentUser; // RETURNS NULL
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // Get the currently signed in users UID
+            let id = user.uid;
 
-    // Create a reference for the database.
-    let db = firebase.firestore();
+            // Create reference for database.
+            let db = firebase.firestore();
 
-    console.log('test');
-    // Create a refernece for the users collection.
-    let ref = db.collection('Users').get(user.uid); 
+            // Create reference for Users collection.
+            let ref = db.collection('Users');
 
-    console.log(ref);
+            // Get user data.
+            ref.doc(id).get().then(function (doc) {
 
-    // Get the wins and loss values from the user.
-    ref.get(user.uid).then(function (doc) {
-        console.log(doc.data());
+                let wins = doc.data().wins; // Assign the users current wins
+                let losses = doc.data().losses; // Assign the users current losses
 
-        // variables for wins and losses
-        let wins = doc.data().wins;
-        console.log(wins);
-        let losses = doc.data().losses;
+                // Create a time stamp for the game.
+                let date = new Date();
+                let timestamp = date.getTime();
 
-        // Create a time stamp for the game.
-        let date = new Date();
-        let timestamp = date.getTime();
+                // Create a game object.
+                let game = {
+                    timestamp: timestamp,
+                    wins: 0,
+                    losses: 0
+                };
 
-        // Create a game object.
-        let game = {
-            timestamp: timestamp,
-            wins: 0,
-            losses: 0
-        };
+                // Check if the user won or lost their game.
+                if (outcome == 0) {
+                    wins++; // Increment wins
+                } else {
+                    losses++; // Increment losses
+                }
 
-        // Check if the user won or lost their game.
-        if (outcome == 0) {
-            wins++; // Increment wins
+                // Update the users wins, loses, and last time played.
+                ref.doc(id).update({
+                    'LastTimePlayed': game.timestamp,
+                    'wins': wins, 
+                    'losses': losses 
+                }).then(function () {
+                    console.log('Game Complete!'); // Feedback.
+
+                    // log an error in the console.
+                }).catch(function (error) {
+                    console.error('Error creating game: ', error);
+                });
+            })
         } else {
-            losses++; // Increment losses
+            // If no user is signed in.
+            console.log('no user');
         }
-
-        // Push the game into the database.
-        ref.doc(id).update({
-            'Games.LastTimePlayed': game.timestamp,
-            'wins': wins, // will be the up-to-date wins
-            'losses': losses // will be the up-to-date losses
-        }).then(function () {
-            console.log('Game Complete!');
-
-            // log an error in the console.
-        }).catch(function (error) {
-            console.error('Error creating game: ', error);
-        });
-    });
+    })
 }

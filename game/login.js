@@ -1,9 +1,21 @@
-// Get a reference to the database server.
-//let db = firebase.firestore();
-//let auth = firebase.auth();
+//--------------------------------------------------------------
+// Your web app's Firebase configuration
+//--------------------------------------------------------------
+let config = {
+    apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
+    authDomain: "battleship-bd087.firebaseapp.com",
+    databaseURL: "https://battleship-bd087.firebaseio.com",
+    projectId: "battleship-bd087",
+    storageBucket: "battleship-bd087.appspot.com",
+    messagingSenderId: "284023123174",
+    appId: "1:284023123174:web:6891c643a73cffa7765f27"
+};
+// Initialize Firebase
+firebase.initializeApp(config);
 
-// Get a reference for users.
-let ref = firebase.firestore().collection('Users');
+// Get a reference to the database server.
+let db = firebase.firestore();
+let auth = firebase.auth();
 
 //------------------------------------------------------
 // SignUp
@@ -26,31 +38,74 @@ function createUser() {
         if (password.length < 6) {
             window.alert('Password needs to be at least 6 characters.');
         }
+        window.alert('That is Invalid');
         var errorCode = error.code;
         var errorMessage = error.message;
         // ...
     });
-
-    // Grab the users uid.
-    user = auth.currentUser;
-
-    // Create a time stamp for the game.
-    let date = new Date();
-    let timestamp = date.getTime();
-
-    // Push the default info into database.
-    ref.doc(user.uid).update({
-        'Account Made': timestamp,
-        'wins': 0, // will be the up-to-date wins
-        'losses': 0 // will be the up-to-date losses
-    }).then(function () {
-        console.log('Information Trnasfer Complete!');
-
-        // log an error in the console.
-    }).catch(function (error) {
-        console.error('Error creating game: ', error);
-    });
 }
+
+//------------------------------------------------------
+// Send new User to database
+//------------------------------------------------------ 
+
+let user = firebase.auth().currentUser;
+let email;
+let START_WINS = 0;
+let START_LOSSES = 0;
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        // User is signed in.
+        console.log('logged in');
+
+        // user information 
+        email = user.email;
+        uid = user.uid;
+
+        // Add the user info to the database.
+        db.collection('Users').doc(uid).set({
+            // CurrGameId: currentGame,
+            'email': email,
+            'UID': uid,
+            'wins': START_WINS,
+            'losses': START_LOSSES
+        }).then(function () {
+            console.log('Doc successfully written!');
+        }).catch(function (error) {
+            console.error('Error writing document: ', error);
+        });
+
+    } else {
+        // No user is signed in.
+        console.log('not logged in');
+    }
+});
+
+// function addUser() {
+//     var user = firebase.auth().currentUser;
+
+//     if (user) { // User is signed in
+
+//         // user information 
+//         email = user.email;
+//         uid = user.uid;
+
+//         // Add the user info to the database.
+//         db.collection('Users').doc(uid).set({
+//             // CurrGameId: currentGame,
+//             'email': email,
+//             'UID': uid,
+//             'wins': START_WINS,
+//             'losses': START_LOSSES
+//         }).then(function () {
+//             console.log('Doc successfully written!');
+//         }).catch(function (error) {
+//             console.error('Error writing document: ', error);
+//         });
+//     } else { // No user is signed in.
+//     }
+// }
 
 //------------------------------------------------------
 // Login 
@@ -63,8 +118,6 @@ function login() {
     let email = theEmail.value;
     let password = pass.value;
 
-    let auth = firebase.auth();
-    
     auth.signInWithEmailAndPassword(email, password).then(function () {
         let user = firebase.auth().currentUser;
         if (user == null) {
@@ -92,39 +145,6 @@ function logout() {
         window.location.replace('login.html');
     }).catch(displayError);
 }
-
-//------------------------------------------------------
-// Send new User to database
-//------------------------------------------------------ 
-
-let user = firebase.auth().currentUser;
-let email, curentGame;
-
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        // User is signed in.
-        console.log('logged in');
-
-        // user information 
-        userEmail = user.email;
-        uid = user.uid;
-
-        // Add the user info to the database.
-        db.collection('Users').doc(uid).set({
-            // CurrGameId: currentGame,
-            email: userEmail,
-            UID: uid
-        }).then(function () {
-            console.log('Doc successfully written!');
-        }).catch(function (error) {
-            console.error('Error writing document: ', error);
-        })
-
-    } else {
-        // No user is signed in.
-        console.log('not logged in');
-    }
-});
 
 //------------------------------------------------------
 // Login Anonymous (OPTIONAL)
