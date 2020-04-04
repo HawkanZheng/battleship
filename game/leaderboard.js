@@ -1,21 +1,6 @@
-//--------------------------------------------------------------
-// Your web app's Firebase configuration
-//--------------------------------------------------------------
-let config = {
-    apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
-    authDomain: "battleship-bd087.firebaseapp.com",
-    databaseURL: "https://battleship-bd087.firebaseio.com",
-    projectId: "battleship-bd087",
-    storageBucket: "battleship-bd087.appspot.com",
-    messagingSenderId: "284023123174",
-    appId: "1:284023123174:web:6891c643a73cffa7765f27"
-};
-// Initialize Firebase
-firebase.initializeApp(config);
-
 // Get a reference to the database server.
-let db = firebase.firestore();
-let auth = firebase.auth();
+//let db = firebase.firestore();
+//let auth = firebase.auth();
 
 //------------------------------------------------------------
 // Play Game
@@ -33,14 +18,14 @@ function playGame() {
 const TOP_PLAYERS = 10;
 
 // Create a leaderboards reference.
-let leaders = db.collection('Leaderboards');
+let leaders = firebase.firestore().collection('Leaderboards');
 
 // Get leaderboard element.
 let boards = document.getElementById('leaderboards');
 
 // Get up to 10 users and display on the leaderboards.
 function leaderboard() {
-    let topTen = db.collection('Leaderboards').orderBy('wins', 'desc').limit(TOP_PLAYERS);
+    let topTen = firebase.firestore().collection('Leaderboards').orderBy('wins', 'desc').limit(TOP_PLAYERS);
 
     let i = 1;
 

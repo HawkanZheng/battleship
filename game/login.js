@@ -1,24 +1,9 @@
-//--------------------------------------------------------------
-// Your web app's Firebase configuration
-//--------------------------------------------------------------
-let config = {
-    apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
-    authDomain: "battleship-bd087.firebaseapp.com",
-    databaseURL: "https://battleship-bd087.firebaseio.com",
-    projectId: "battleship-bd087",
-    storageBucket: "battleship-bd087.appspot.com",
-    messagingSenderId: "284023123174",
-    appId: "1:284023123174:web:6891c643a73cffa7765f27"
-};
-// Initialize Firebase
-firebase.initializeApp(config);
-
 // Get a reference to the database server.
-let db = firebase.firestore();
-let auth = firebase.auth();
+//let db = firebase.firestore();
+//let auth = firebase.auth();
 
 // Get a reference for users.
-let ref = db.collection('Users');
+let ref = firebase.firestore().collection('Users');
 
 //------------------------------------------------------
 // SignUp
@@ -78,6 +63,8 @@ function login() {
     let email = theEmail.value;
     let password = pass.value;
 
+    let auth = firebase.auth();
+    
     auth.signInWithEmailAndPassword(email, password).then(function () {
         let user = firebase.auth().currentUser;
         if (user == null) {

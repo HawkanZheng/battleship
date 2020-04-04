@@ -1,21 +1,6 @@
-// // --------------------------------------------------------------
-// // Your web app's Firebase configuration
-// // --------------------------------------------------------------
-// let config = {
-//     apiKey: "AIzaSyARIbY2NZNNKeDI9znuuc3uGusKQTKieM4",
-//     authDomain: "battleship-bd087.firebaseapp.com",
-//     databaseURL: "https://battleship-bd087.firebaseio.com",
-//     projectId: "battleship-bd087",
-//     storageBucket: "battleship-bd087.appspot.com",
-//     messagingSenderId: "284023123174",
-//     appId: "1:284023123174:web:6891c643a73cffa7765f27"
-// };
-// // Initialize Firebase
-// firebase.initializeApp(config);
-
-// // // Get a reference to the database server.
-let db = firebase.firestore();
-// let auth = firebase.auth();
+// Get a reference to the database server.
+//let db = firebase.firestore();
+//let auth = firebase.auth();
 
 //Table height and width
 const T_HEIGHT = 10;
@@ -243,6 +228,8 @@ function setBoard() {
 
                 //Show fire button
                 showPlay();
+
+                addGame(0);
             } else {
                 window.alert("One or more ships are overlapping. Please re-enter coordinates.")
             }
@@ -688,20 +675,25 @@ function checkCompSunk() {
 fireBtn.onclick = userFire;
 placeBtn.onclick = setBoard;
 
-// Get a reference for users.
-let ref = db.collection('Users');
-
 //-----------------------------------------------------------
-// Database Functions.
+// Database Functions. (NOT WORKING)
 //-----------------------------------------------------------
 
 function addGame(outcome) {
-    // Grab the 'creators' information.
-    let user = firebase.auth().currentUser;
+    
+    // Grab the players information.
+    let user = firebase.auth().currentUser; // RETURNS NULL
 
-    console.log(user);
+    // Create a reference for the database.
+    let db = firebase.firestore();
+
+    console.log('test');
+    // Create a refernece for the users collection.
+    let ref = db.collection('Users').get(user.uid); 
+
+    console.log(ref);
+
     // Get the wins and loss values from the user.
-
     ref.get(user.uid).then(function (doc) {
         console.log(doc.data());
 
@@ -742,5 +734,3 @@ function addGame(outcome) {
         });
     });
 }
-
-//addGame(0);
