@@ -1,3 +1,6 @@
+//Leaderboard width
+const WIDTH = 3;
+
 //--------------------------------------------------------------
 // Your web app's Firebase configuration
 //--------------------------------------------------------------
@@ -59,51 +62,39 @@ let boards = document.getElementById('leaderboards');
 function leaderboard() {
     let topTen = leaders.orderBy('wins', 'desc').limit(TOP_PLAYERS);
 
-    let i = 1;
-
     // Create a row element
     let list = document.createElement('ol');
     list.setAttribute('list-style-type', 'none');
-
+    let table = document.createElement('table');
+    //table.setAttribute('border', '1', 'solid', 'black');
+    let tbdy = document.createElement('tbody');
+    let rank = 1;
     topTen.get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
             let players = doc.data();
-
-            console.log(players);
-            // Create a cell element.
-            let item = document.createElement('li');
-
-            // item.innerHTML = i + '. ' + players.email
-            // + '</br>' + 'Wins: ' + players.wins;
-
-            // Set the contents.
-            item.appendChild(document.createTextNode(players.email
-                + ', ' + 'Wins: ' + players.wins));
-
-            // Add it to the list.
-            list.appendChild(item);
-
-             // Gives each user a rank.
-             i++;
-
-            // // The users email.
-            // let userName = document.createElement('td');
-            // userName.innerHTML = players.email;
-
-            // // Value of wins per user.
-            // let score = document.createElement('td');
-            // score.innerHTML = players.wins;
-
-            // // Add item to list.
-            // boards.appendChild(row);
-            // boards.appendChild(header);
-            // boards.appendChild(userName);
-            // boards.appendChild(score);
-        })
+            let tr = document.createElement('tr');        
+            for(let i = 0; i < WIDTH; i++){
+                let td = document.createElement('td');
+                switch(i){
+                    case 0:
+                        td.innerHTML = rank + ".";
+                        break;
+                    case 1:
+                        td.innerHTML = players.email;
+                        break;
+                    case 2:
+                        td.innerHTML = "Wins: " + players.wins;
+                }
+                tr.appendChild(td);
+            }
+            rank++;
+            tbdy.appendChild(tr);
+        });
+        table.appendChild(tbdy);
     });
     
     // Append the list.
-    boards.appendChild(list);
+    boards.appendChild(table);
 }
 
 leaderboard();
