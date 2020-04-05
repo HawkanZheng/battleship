@@ -648,17 +648,15 @@ function isSunk(aShip, arr) {
 //Determines if the game is over, either user or computer sunk 5 ships
 function gameOver() {
     let over = false;
-    if (compShipsSunk == 5) {
+    if (compShipsSunk == 1) {
         //User wins
         over = true;
         window.alert("GAME OVER. YOU WIN!");
-        location.replace("landingPage.html");
         addGame(0); // Call the add Game function if wins.
     } else if (userShipsSunk == 5) {
         //User loses
         over = true;
         window.alert("GAME OVER. YOU LOSE!");
-        location.replace("landingPage.html");
         addGame(1); // Call the add Game function if losses.
     }
     return over;
@@ -699,6 +697,7 @@ placeBtn.onclick = setBoard;
 //-----------------------------------------------------------
 
 function addGame(outcome) {
+
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             // Get the currently signed in users UID
@@ -740,11 +739,16 @@ function addGame(outcome) {
                     'wins': wins, 
                     'losses': losses 
                 }).then(function () {
-                    console.log('Game Complete!'); // Feedback.
+                    // Send to landing page.
+                    location.replace('landingPage.html');
 
-                    // log an error in the console.
+                // log an error in the console.
                 }).catch(function (error) {
                     console.error('Error creating game: ', error);
+                    window.alert('Error Game failed to uplaod to server.');
+
+                    // Send to landing page.
+                    location.replace('landingPage.html');
                 });
             })
         } else {

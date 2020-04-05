@@ -32,8 +32,26 @@ function createUser() {
 
     auth.createUserWithEmailAndPassword(email, password).then(function () {
 
-        // Send them to landing page
-        location.replace('landingPage.html');
+        // Gives authorization to log in if the email and password are valid.
+        auth.signInWithEmailAndPassword(email, password).then(function () {
+
+            // reference to firebase authentication.
+            let user = firebase.auth().currentUser;
+
+            if (user == null) {
+                // User not signed in.
+                console.log("not logged in");
+            } else {
+                // user is signed in, send to game page.
+                window.location.replace('landingPage.html');
+            }
+        }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            window.alert('Not a valid log in.');
+            var errorMessage = error.message;
+            // ...
+        });
 
     }).catch(function (error) {
         // Handle Errors here.
@@ -71,7 +89,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
         // Add the user info to the database.
         db.collection('Users').doc(uid).set({
-            'email': email, 
+            'email': email,
             'UID': uid, // Unique ID created when signup
             'wins': START_WINS, // Starts at zero wins
             'losses': START_LOSSES // starts at zero losses
@@ -103,10 +121,10 @@ function login() {
 
     // Gives authorization to log in if the email and password are valid.
     auth.signInWithEmailAndPassword(email, password).then(function () {
-        
+
         // reference to firebase authentication.
         let user = firebase.auth().currentUser;
-        
+
         if (user == null) {
             // User not signed in.
             console.log("not logged in");
