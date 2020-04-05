@@ -12,9 +12,7 @@
     font-family: 'Courier New', Courier, monospace;
 }
 
-/* td,
-tr,
-th, */
+td,
 h1 {
     font-family: 'Courier New', Courier, monospace;
     color: black;
@@ -54,5 +52,6 @@ table{
 td{
     /* padding: 1px; */
     text-align: left;
+    font-size: medium;
     /* border-bottom: 1px solid black; */
 }
