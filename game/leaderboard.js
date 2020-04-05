@@ -1,3 +1,6 @@
+//Leaderboard width
+const WIDTH = 3;
+
 //--------------------------------------------------------------
 // Your web app's Firebase configuration
 //--------------------------------------------------------------
@@ -60,26 +63,37 @@ function leaderboard() {
     // Create a row element
     let list = document.createElement('ol');
     list.setAttribute('list-style-type', 'none');
-
+    let table = document.createElement('table');
+    //table.setAttribute('border', '1', 'solid', 'black');
+    let tbdy = document.createElement('tbody');
+    let rank = 1;
     topTen.get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
             
             // Assign users data to a variable.
             let players = doc.data();
-
-            // Create a cell element.
-            let item = document.createElement('li');
-
-            // Add the players info to the element.
-            item.innerHTML = players.email
-            + '</br>' + 'Wins: ' + players.wins;
-
-            // Add it to the list.
-            list.appendChild(item);
-        })
+            let tr = document.createElement('tr');        
+            for(let i = 0; i < WIDTH; i++){
+                let td = document.createElement('td');
+                switch(i){
+                    case 0:
+                        td.innerHTML = rank + ".";
+                        break;
+                    case 1:
+                        td.innerHTML = players.email;
+                        break;
+                    case 2:
+                        td.innerHTML = "Wins: " + players.wins;
+                }
+                tr.appendChild(td);
+            }
+            rank++;
+            tbdy.appendChild(tr);
+        });
+        table.appendChild(tbdy);
     });
     // Append the list.
-    boards.appendChild(list);
+    boards.appendChild(table);
 }
 
 // Call the function
