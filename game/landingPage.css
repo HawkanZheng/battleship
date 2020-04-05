@@ -34,3 +34,15 @@ h1{
 #play-btn{
     text-align: center;
 }
+
+#logout-btn{
+    color: black;
+    background-color: #FFC312;
+    width: 125px;
+    height: 35px;
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+}
