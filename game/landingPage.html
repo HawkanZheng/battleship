@@ -17,6 +17,14 @@
 </head>
 
 <body>
+    <div id="play-btn">
+        <ul id="opengames">
+
+        </ul>
+        </br>
+        <button onclick="playGame()" class="create_game">Play</button>
+        </br>
+    </div>
     <h1><span>Battleship Rules</span></h1>
     <div>
         <p>
@@ -35,10 +43,6 @@
                 <li>Player wins when all 5 enemy ships are sunk.</li>
             </ul>
 
-            <div id="play-btn">
-                <button onclick="playGame()" class="create_game">Play</button>
-            </div>
-
             <div class="content-table" id="leaderboard">
                     <h1 id="leaderboardTitle">Leaderboard</h1>
                     <table class="table">
@@ -54,6 +58,7 @@
 
         </p>
     </div>
+    
     <script src="leaderboard.js"></script>
     <script src="landingPage.js"></script>
     <script src="login.js"></script>

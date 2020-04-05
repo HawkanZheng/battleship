@@ -147,3 +147,7 @@ table {
     font-family: 'Courier New', Courier, monospace;
     cursor: pointer;
 }
+
+span{
+    text-decoration: underline;
+}

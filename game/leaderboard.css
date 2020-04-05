@@ -1,7 +1,8 @@
 .content-table {
-    margin: 80vw;
-    font-size: 2vw;
-    max-width: 40vw;
+    margin: 100px;
+    font-size: 0.1em;
+    max-width: 25vw;
+    min-width: 300px;
     border-radius: 5px;
     text-align: center;
     background-color: #669DB3FF;
@@ -12,8 +13,6 @@
 }
 
 td,
-tr,
-th,
 h1 {
     font-family: 'Courier New', Courier, monospace;
     color: black;
@@ -43,17 +42,16 @@ li {
     list-style-type: none;
     font-family: 'Courier New', Courier, monospace;
 }
+table{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%
+    
+}
 
-/* If the screen size is 601px wide or more, set the font-size of <div> to 80px */
-@media screen and (min-width: 601px) {
-    div.example {
-      font-size: 80px;
-    }
-  }
-  
-  /* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
-  @media screen and (max-width: 600px) {
-    div.example {
-      font-size: 30px;
-    }
-  }
+td{
+    /* padding: 1px; */
+    text-align: left;
+    font-size: medium;
+    /* border-bottom: 1px solid black; */
+}
