@@ -18,6 +18,8 @@ h1 {
 .container {
     height: 100%;
     align-content: center;
+    border-radius: 10px;
+    text-indent: 10px;
 }
 
 .firebase.ui-auth-container {
