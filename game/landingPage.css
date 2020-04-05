@@ -3,22 +3,21 @@
     background-color: #FFC312;
     width: 200px;
     height: 50px;
-    font-size: larger;
+    font-size: 1.5em;
     font-weight: bold;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
     cursor: pointer;
-  
+    border: solid 1px black;
+    border-radius: 10px;
 }
 
 .create_game:hover {
     color: black;
-    background-color: white;
-    
+    background-color: white; 
 }
 
 div{
-
     font-size: 25px;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
@@ -40,9 +39,22 @@ h1{
     background-color: #FFC312;
     width: 125px;
     height: 35px;
-    font-size: larger;
+    font-size: 1em;
     font-weight: bold;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
     cursor: pointer;
+    border: solid 1px black;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#logout-btn:hover {
+    color: black;
+    background-color: white; 
+}
+
+ul {
+    color: blue;
 }

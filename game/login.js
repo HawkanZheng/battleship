@@ -142,17 +142,6 @@ function login() {
 }
 
 //------------------------------------------------------
-// Logout
-//------------------------------------------------------ 
-
-// Function to deal with logging out.
-function logout() {
-    firebase.auth().signOut().then(function () {
-        window.location.replace('login.html');
-    }).catch(displayError);
-}
-
-//------------------------------------------------------
 // Login Anonymous (OPTIONAL)
 //------------------------------------------------------ 
 

@@ -648,7 +648,7 @@ function isSunk(aShip, arr) {
 //Determines if the game is over, either user or computer sunk 5 ships
 function gameOver() {
     let over = false;
-    if (compShipsSunk == 1) {
+    if (compShipsSunk == 5) {
         //User wins
         over = true;
         window.alert("GAME OVER. YOU WIN!");
@@ -736,13 +736,13 @@ function addGame(outcome) {
                 // Update the users wins, loses, and last time played.
                 ref.doc(id).update({
                     'LastTimePlayed': game.timestamp,
-                    'wins': wins, 
-                    'losses': losses 
+                    'wins': wins,
+                    'losses': losses
                 }).then(function () {
                     // Send to landing page.
                     location.replace('landingPage.html');
 
-                // log an error in the console.
+                    // log an error in the console.
                 }).catch(function (error) {
                     console.error('Error creating game: ', error);
                     window.alert('Error Game failed to uplaod to server.');
@@ -756,4 +756,14 @@ function addGame(outcome) {
             console.log('no user');
         }
     })
+}
+
+//------------------------------------------------------
+// Quit Game
+//------------------------------------------------------ 
+
+// Function to deal with logging out.
+function quitGame() {
+    // Send back to landing page.
+    location.replace('landingPage.html');
 }

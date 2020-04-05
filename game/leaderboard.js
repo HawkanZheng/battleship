@@ -26,25 +26,6 @@ function playGame() {
 }
 
 //------------------------------------------------------------
-// Welcome message 
-//------------------------------------------------------------
-
-// Create a users reference.
-let ref = db.collection('Users');
-
-function welcome() {
-    let user = auth.currentUser;
-
-    ref.get().then(function(doc) {
-        console.log(doc.data());
-    })
-
-    let message = document.getElementById('welcome');
-
-    message.innerHTML = 'Welcome to Battle Ship ' + user.email;
-}
-
-//------------------------------------------------------------
 // Leaderboards
 //------------------------------------------------------------
 
@@ -57,6 +38,7 @@ let leaders = db.collection('Users');
 // Get leaderboard element.
 let boards = document.getElementById('leaderboards');
 
+// Populate leaderboard.
 function leaderboard() {
     let topTen = leaders.orderBy('wins', 'desc').limit(TOP_PLAYERS);
 

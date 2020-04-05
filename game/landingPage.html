@@ -5,22 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battleship</title>
-    <link rel="stylesheet" href="landingPage.css">
-    <link rel="stylesheet" href="leaderboard.css">
-
     <!----------------------------------------------->
     <!-- CSS: Bootstrap, Firebase, other API -->
     <!----------------------------------------------->
     <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="landingPage.css">
+    <link rel="stylesheet" href="leaderboard.css">
 </head>
 
 <body>
     <div id="play-btn">
-        <ul id="opengames">
-
-        </ul>
         </br>
         <button onclick="playGame()" class="create_game">Play</button>
         </br>
@@ -28,7 +24,7 @@
     <h1><span>Battleship Rules</span></h1>
     <div>
         <p>
-            <ul>
+            <ul id="rules">
                 <li>Player must first setup their board by entering the span of their ships.</li>
                 </br>
                 <li>Players take turns firing shots (by entering grid coordinates) to attempt to hit enemy ships.
@@ -44,21 +40,21 @@
             </ul>
 
             <div class="content-table" id="leaderboard">
-                    <h1 id="leaderboardTitle">Leaderboard</h1>
-                    <table class="table">
-                        <tr>
-                            <div id="leaderboards"></div>
-                        </tr>
-                    </table>                  
+                <h1 id="leaderboardTitle">Leaderboard</h1>
+                <table class="table">
+                    <tr>
+                        <div id="leaderboards"></div>
+                    </tr>
+                </table>
             </div>
-
             <div id="logout-btn">
-                <button id="play-btn" onclick="logout()" class="create_game">Logout</button>
+                <button id="logout-btn" onclick="logout()">Logout</button>
             </div>
-
         </p>
     </div>
-    
+    <!--------------------------------------------------------------------->
+    <!-- JS files: Your own JavaScript functions included here    -->
+    <!--------------------------------------------------------------------->
     <script src="leaderboard.js"></script>
     <script src="landingPage.js"></script>
     <script src="login.js"></script>
