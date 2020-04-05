@@ -29,46 +29,26 @@
                 <li>On your turn, enter the letter and number that identifies a row and column on the
                     enemy grid grid.</li>
                 </br>
-                <li>Hits are marked in red and misses are marked in blue. A ship is sunk when each unit of the ship is hit.</li>
+                <li>Hits are marked in red and misses are marked in blue. A ship is sunk when each unit of the ship is
+                    hit.</li>
                 </br>
                 <li>Player wins when all 5 enemy ships are sunk.</li>
             </ul>
 
-            <!-- <div class="card-header" id="headerGradient">
-                <h1 id="leaderboardTitle">Leaderboard</h1>
+            <div id="play-btn">
+                <button onclick="playGame()" class="create_game">Play</button>
             </div>
-            <div id="leaderboards"></div> -->
 
             <div class="content-table" id="leaderboard">
-                <div class="d-flex w-100 justify-content-center align-self-center">
-                    <div class="card text-center" id="outlineCard">
-                        <div class="card-header" id="headerGradient">
-                            <h1 id="leaderboardTitle">Leaderboard</h1>
-                        </div>
-                        <div class="cardBody">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <div id="leaderboards"></div>
-                                    </tr>
-                                </thead>
-                                <tbody id="leaderboardBody"></tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                    <h1 id="leaderboardTitle">Leaderboard</h1>
+                    <table class="table">
+                        <tr>
+                            <div id="leaderboards"></div>
+                        </tr>
+                    </table>
             </div>
 
         </p>
-    </div>
-    <div id="play-btn">
-        <ul id="opengames">
-
-        </ul>
-        </br>
-        <button onclick="playGame()" class="create_game">Play</button>
-        </br>
     </div>
     <script src="leaderboard.js"></script>
     <script src="landingPage.js"></script>
