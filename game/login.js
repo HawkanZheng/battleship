@@ -22,9 +22,11 @@ let auth = firebase.auth();
 //------------------------------------------------------ 
 function createUser() {
 
+    // Grabs dom element references.
     let theEmail = document.getElementById('userName');
     let pass = document.getElementById('password');
 
+    // Sets the values for the email and password.
     let email = theEmail.value;
     let password = pass.value;
 
@@ -49,77 +51,62 @@ function createUser() {
 // Send new User to database
 //------------------------------------------------------ 
 
+// Reference to the authentication in firestore.
 let user = firebase.auth().currentUser;
-let email;
-let START_WINS = 0;
-let START_LOSSES = 0;
 
+// Declares variables used to store user info in the database.
+let email;
+const START_WINS = 0;
+const START_LOSSES = 0;
+
+// Checks for changes in the signed in user.
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // User is signed in.
         console.log('logged in');
 
-        // user information 
+        // Grabs user info from firestore.
         email = user.email;
         uid = user.uid;
 
         // Add the user info to the database.
         db.collection('Users').doc(uid).set({
-            // CurrGameId: currentGame,
-            'email': email,
-            'UID': uid,
-            'wins': START_WINS,
-            'losses': START_LOSSES
+            'email': email, 
+            'UID': uid, // Unique ID created when signup
+            'wins': START_WINS, // Starts at zero wins
+            'losses': START_LOSSES // starts at zero losses
         }).then(function () {
             console.log('Doc successfully written!');
         }).catch(function (error) {
             console.error('Error writing document: ', error);
         });
-
     } else {
         // No user is signed in.
         console.log('not logged in');
     }
 });
 
-// function addUser() {
-//     var user = firebase.auth().currentUser;
-
-//     if (user) { // User is signed in
-
-//         // user information 
-//         email = user.email;
-//         uid = user.uid;
-
-//         // Add the user info to the database.
-//         db.collection('Users').doc(uid).set({
-//             // CurrGameId: currentGame,
-//             'email': email,
-//             'UID': uid,
-//             'wins': START_WINS,
-//             'losses': START_LOSSES
-//         }).then(function () {
-//             console.log('Doc successfully written!');
-//         }).catch(function (error) {
-//             console.error('Error writing document: ', error);
-//         });
-//     } else { // No user is signed in.
-//     }
-// }
-
 //------------------------------------------------------
 // Login 
 //------------------------------------------------------ 
+
+// Function to handle login for user.
 function login() {
 
+    // Grabs the DOM elements.
     let theEmail = document.getElementById('userName');
     let pass = document.getElementById('password');
 
+    // Stores the typed in info into variables.
     let email = theEmail.value;
     let password = pass.value;
 
+    // Gives authorization to log in if the email and password are valid.
     auth.signInWithEmailAndPassword(email, password).then(function () {
+        
+        // reference to firebase authentication.
         let user = firebase.auth().currentUser;
+        
         if (user == null) {
             // User not signed in.
             console.log("not logged in");
@@ -134,12 +121,13 @@ function login() {
         var errorMessage = error.message;
         // ...
     });
-    // Store the users information into the database.
 }
 
 //------------------------------------------------------
 // Logout
 //------------------------------------------------------ 
+
+// Function to deal with logging out.
 function logout() {
     firebase.auth().signOut().then(function () {
         window.location.replace('login.html');

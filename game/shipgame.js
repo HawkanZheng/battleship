@@ -653,13 +653,13 @@ function gameOver() {
         over = true;
         window.alert("GAME OVER. YOU WIN!");
         location.replace("landingPage.html");
-        addGame(0); // Call the add Game function
+        addGame(0); // Call the add Game function if wins.
     } else if (userShipsSunk == 5) {
         //User loses
         over = true;
         window.alert("GAME OVER. YOU LOSE!");
         location.replace("landingPage.html");
-        addGame(1); // Call the add Game function
+        addGame(1); // Call the add Game function if losses.
     }
     return over;
 }
