@@ -225,7 +225,6 @@ function setBoard() {
                 //Generate 2D array representing computer opponent ship placement
                 //Generate computer opponent grid
                 computerArr = createPositionArr(loadOpponentShips());
-                console.log(computerArr);
                 gridCreate(computerArr, 1);
 
                 //Generate 2D array representing user ship placement
@@ -259,25 +258,25 @@ function setBoard() {
 
 //Get x coordinate from input
 function getXCoor(str, index) {
-    //Start point x cooridinate
-    let startX = str[index];
+    //X coordinate
+    let x = str[index];
     //Invalid input of column coordinate
-    if (colArr.indexOf(startX) == -1) {
+    if (colArr.indexOf(x) == -1) {
         //window.alert("Invalid input. Please re-enter coordinates.");
         return;
     }
-    return (startX.charCodeAt(0) - OFFSET);
+    return (x.charCodeAt(0) - OFFSET);
 }
 
 //Get y coordinate from input
 function getYCoor(str, index) {
-    //Start point y cooridinate
-    let startY = parseInt(str[index]);
-    // if (startY < 1 || startY > 9) {
-    //     window.alert("Invalid input. Please re-enter coordinates.");
-    //     return;
-    // } 
-    return startY;
+    //Y cooridinate
+    let y = parseInt(str[index]);
+    //If 0 is inputed
+     if (y == 0) {
+        return;
+    } 
+    return y;
 }
 
 
@@ -693,7 +692,7 @@ fireBtn.onclick = userFire;
 placeBtn.onclick = setBoard;
 
 //-----------------------------------------------------------
-// Database Functions. (NOT WORKING)
+// Database Functions.
 //-----------------------------------------------------------
 
 function addGame(outcome) {

@@ -88,7 +88,6 @@ input:focus {
     font-weight: bold;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
-    cursor: pointer;
     border: solid 1px black;
     border-radius: 10px;
     margin-left: auto;
@@ -98,6 +97,7 @@ input:focus {
 .login_btn:hover {
     color: black;
     background-color: white;
+    cursor: pointer;
 }
 
 .links {

@@ -61,7 +61,6 @@ td {
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
     border: none;
-    cursor: pointer;
     border: solid 1px black;
     border-radius: 10px;
 }
@@ -136,6 +135,7 @@ table {
 #fire:hover {
     color: black;
     background-color: white; 
+    cursor: pointer;
 }
 
 .sunk {
@@ -150,6 +150,7 @@ table {
 #place:hover {
     color: black;
     background-color: white; 
+    cursor: pointer;
 }
 
 span{
@@ -163,7 +164,6 @@ span{
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
     border: none;
-    cursor: pointer;
     border: solid 1px black;
     border-radius: 10px;
 }
@@ -171,4 +171,5 @@ span{
 #quit:hover {
     color: black;
     background-color: white; 
+    cursor: pointer;
 }

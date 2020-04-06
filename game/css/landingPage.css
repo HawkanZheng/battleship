@@ -13,7 +13,6 @@ body {
     font-weight: bold;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
-    cursor: pointer;
     border: solid 1px black;
     border-radius: 10px;
 }
@@ -21,6 +20,7 @@ body {
 .create_game:hover {
     color: black;
     background-color: white; 
+    cursor: pointer;
 }
 
 div{
@@ -49,7 +49,6 @@ h1{
     font-weight: bold;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
-    cursor: pointer;
     border: solid 1px black;
     border-radius: 10px;
     margin-left: auto;
@@ -59,6 +58,7 @@ h1{
 #logout-btn:hover {
     color: black;
     background-color: white; 
+    cursor: pointer;
 }
 
 .instr {

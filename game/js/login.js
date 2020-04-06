@@ -46,11 +46,7 @@ function createUser() {
                 window.location.replace('landingPage.html');
             }
         }).catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            window.alert('Not a valid log in.');
-            var errorMessage = error.message;
-            // ...
+            window.alert(error.message);
         });
 
     }).catch(function (error) {
@@ -58,10 +54,7 @@ function createUser() {
         if (password.length < 6) {
             window.alert('Password needs to be at least 6 characters.');
         }
-        window.alert('That is Invalid');
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
+        window.alert(error.message);
     });
 }
 
@@ -80,27 +73,35 @@ const START_LOSSES = 0;
 // Checks for changes in the signed in user.
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        // User is signed in.
-        console.log('logged in');
-
-        // Grabs user info from firestore.
-        email = user.email;
-        uid = user.uid;
-
-        // Add the user info to the database.
-        db.collection('Users').doc(uid).set({
-            'email': email,
-            'UID': uid, // Unique ID created when signup
-            'wins': START_WINS, // Starts at zero wins
-            'losses': START_LOSSES // starts at zero losses
-        }).then(function () {
-            console.log('Doc successfully written!');
-        }).catch(function (error) {
-            console.error('Error writing document: ', error);
+        let checkUser = true;
+        db.collection('Users').get().then((snapshot) => {
+            snapshot.docs.forEach(doc => {
+                if(doc.data().UID == user.uid){
+                    checkUser = false;
+                }
+            });
         });
-    } else {
-        // No user is signed in.
-        console.log('not logged in');
+        console.log(checkUser);
+        if (checkUser) {
+            // Grabs user info from firestore.
+            email = user.email;
+            uid = user.uid;
+
+            // Add the user info to the database.
+            db.collection('Users').doc(uid).set({
+                'email': email,
+                'UID': uid, // Unique ID created when signup
+                'wins': START_WINS, // Starts at zero wins
+                'losses': START_LOSSES // starts at zero losses
+            }).then(function () {
+                console.log('Doc successfully written!');
+            }).catch(function (error) {
+                console.error('Error writing document: ', error);
+            });
+        } else {
+            // No user is signed in.
+            console.log('not logged in');
+        }
     }
 });
 
@@ -134,36 +135,6 @@ function login() {
         }
     }).catch(function (error) {
         // Handle Errors here.
-        var errorCode = error.code;
-        window.alert('Not a valid log in.');
-        var errorMessage = error.message;
-        // ...
+        window.alert(error.message);
     });
 }
-
-//------------------------------------------------------
-// Login Anonymous (OPTIONAL)
-//------------------------------------------------------ 
-
-// Allow user to sign in as guest.
-firebase.auth().signInAnonymously().catch(function (error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // ...
-});
-
-let anon;
-
-// Get Guest user data 
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        // User is signed in.
-        anon = user.isAnonymous;
-        uid = user.uid;
-        // ...
-    } else {
-        // User is signed out.
-        console.log('No User logged in.')
-    }
-});

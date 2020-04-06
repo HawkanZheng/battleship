@@ -42,11 +42,8 @@ let boards = document.getElementById('leaderboards');
 function leaderboard() {
     let topTen = leaders.orderBy('wins', 'desc').limit(TOP_PLAYERS);
 
-    // Create a row element
-    let list = document.createElement('ol');
-    list.setAttribute('list-style-type', 'none');
+    // Create table for leaderboard
     let table = document.createElement('table');
-    //table.setAttribute('border', '1', 'solid', 'black');
     let tbdy = document.createElement('tbody');
     let rank = 1;
     topTen.get().then((snapshot) => {
@@ -74,7 +71,7 @@ function leaderboard() {
         });
         table.appendChild(tbdy);
     });
-    // Append the list.
+    // Append the table to board
     boards.appendChild(table);
 }
 
