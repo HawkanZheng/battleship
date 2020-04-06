@@ -1,5 +1,5 @@
 body {
-    background-image: url(images/beach.jpg);
+    background-image: url(../images/beach.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100% 100%;
@@ -61,6 +61,6 @@ h1{
     background-color: white; 
 }
 
-ul {
-    color: blue;
+.instr {
+    color: rgb(0, 0, 0);
 }

@@ -11,8 +11,8 @@
     <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.2/firebase-firestore.js"></script>
-    <link rel="stylesheet" href="landingPage.css">
-    <link rel="stylesheet" href="leaderboard.css">
+    <link rel="stylesheet" href="css/landingPage.css">
+    <link rel="stylesheet" href="css/leaderboard.css">
 </head>
 
 <body>
@@ -21,22 +21,22 @@
         <button onclick="playGame()" class="create_game">Play</button>
         </br>
     </div>
-    <h1><span>Battleship Rules</span></h1>
+    <h1><span class="instr">Battleship Rules</span></h1>
     <div>
         <p>
             <ul id="rules">
-                <li>Player must first setup their board by entering the span of their ships.</li>
+                <li class="instr">Player must first setup their board by entering the span of their ships.</li>
                 </br>
-                <li>Players take turns firing shots (by entering grid coordinates) to attempt to hit enemy ships.
+                <li class="instr">Players take turns firing shots (by entering grid coordinates) to attempt to hit enemy ships.
                 </li>
                 </br>
-                <li>On your turn, enter the letter and number that identifies a row and column on the
+                <li class="instr">On your turn, enter the letter and number that identifies a row and column on the
                     enemy grid grid.</li>
                 </br>
-                <li>Hits are marked in red and misses are marked in blue. A ship is sunk when each unit of the ship is
+                <li class="instr">Hits are marked in red and misses are marked in blue. A ship is sunk when each unit of the ship is
                     hit.</li>
                 </br>
-                <li>Player wins when all 5 enemy ships are sunk.</li>
+                <li class="instr">Player wins when all 5 enemy ships are sunk.</li>
             </ul>
 
             <div class="content-table" id="leaderboard">
@@ -55,10 +55,10 @@
     <!--------------------------------------------------------------------->
     <!-- JS files: Your own JavaScript functions included here    -->
     <!--------------------------------------------------------------------->
-    <script src="leaderboard.js"></script>
-    <script src="landingPage.js"></script>
-    <script src="login.js"></script>
-    <script src="shipgame.js"></script>
+    <script src="js/leaderboard.js"></script>
+    <script src="js/landingPage.js"></script>
+    <!-- <script src="login.js"></script> -->
+    <!-- <script src="shipgame.js"></script> -->
 </body>
 
 </html>

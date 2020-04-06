@@ -2,7 +2,7 @@
 
 html,
 body {
-    background-image: url(images/battleship.jpg);
+    background-image: url(../images/battleship.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100% 100%;
